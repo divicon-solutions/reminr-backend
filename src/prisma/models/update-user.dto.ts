@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDateString, IsOptional, IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export class UpdateUserDto {
   @ApiProperty({
@@ -10,18 +10,8 @@ export class UpdateUserDto {
   email?: string;
   @ApiProperty({
     required: false,
-    nullable: true,
   })
   @IsOptional()
   @IsString()
-  fullName?: string | null;
-  @ApiProperty({
-    type: 'string',
-    format: 'date-time',
-    required: false,
-    nullable: true,
-  })
-  @IsOptional()
-  @IsDateString()
-  deletedAt?: Date | null;
+  fullName?: string;
 }

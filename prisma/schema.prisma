@@ -33,13 +33,24 @@ generator nestjsDto {
   prettier                        = "true"
 }
 
+enum Role {
+  ADMIN
+  USER
+}
+
 /// @@deny('read', deletedAt != null)
-/// @@allow('all', auth().id == id)
+/// @@allow('all', auth().id == id || auth().role == 'ADMIN')
 model User {
-  id        Int       @id() @default(autoincrement())
+  /// @DtoCreateOptional
+  id        String    @id() @default(uuid())
   email     String    @unique()
-  fullName  String?
+  fullName  String
+  /// @DtoCreateOptional
+  role      Role      @default(USER)
+  /// @DtoReadOnly
   createdAt DateTime  @default(now())
+  /// @DtoReadOnly
   updatedAt DateTime  @updatedAt()
+  /// @DtoReadOnly
   deletedAt DateTime?
 }

@@ -19,7 +19,9 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@app/prisma": ["src/prisma/index.ts"],
+      "@app/shared": ["src/shared/index.ts"],
       "@app/*": ["src/*"]
-    }
+    },
+    "resolveJsonModule": true
   }
 }

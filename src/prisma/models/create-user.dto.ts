@@ -1,30 +1,26 @@
+import { Role } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsDateString,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateUserDto {
+  @ApiProperty({
+    default: 'uuid',
+  })
+  @IsOptional()
+  @IsString()
+  id?: string;
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
   email: string;
-  @ApiProperty({
-    required: false,
-    nullable: true,
-  })
-  @IsOptional()
+  @ApiProperty()
+  @IsNotEmpty()
   @IsString()
-  fullName?: string | null;
+  fullName: string;
   @ApiProperty({
-    type: 'string',
-    format: 'date-time',
-    required: false,
-    nullable: true,
+    enum: Role,
+    default: 'USER',
   })
   @IsOptional()
-  @IsDateString()
-  deletedAt?: Date | null;
+  role?: Role;
 }

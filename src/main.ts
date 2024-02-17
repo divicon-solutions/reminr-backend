@@ -3,6 +3,24 @@ import { ConfigService } from '@nestjs/config';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import * as admin from 'firebase-admin';
+import * as serviceAccountKey from './config/serviceAccountKey.json';
+import { CursorPaginatedDto, PaginatedDto, SuccessResponseDto } from './shared';
+
+function initializeFirebase() {
+  const logger = new Logger('Firebase');
+  if (!admin.apps.length) {
+    admin.initializeApp({
+      credential: admin.credential.cert(
+        serviceAccountKey as admin.ServiceAccount,
+      ),
+      storageBucket: `gs://${serviceAccountKey.project_id}.appspot.com`,
+    });
+    logger.log('Firebase initialized');
+  } else {
+    logger.log('Firebase already initialized');
+  }
+}
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -18,7 +36,9 @@ async function bootstrap() {
     .addBearerAuth()
     .addSecurityRequirements('bearer')
     .build();
-  const document = SwaggerModule.createDocument(app, config);
+  const document = SwaggerModule.createDocument(app, config, {
+    extraModels: [SuccessResponseDto, CursorPaginatedDto, PaginatedDto],
+  });
   SwaggerModule.setup('/api/v1/docs', app, document, {
     jsonDocumentUrl: '/api/v1/docs/swagger.json',
     swaggerOptions: {
@@ -33,4 +53,6 @@ async function bootstrap() {
   await app.listen(port);
   logger.log(`Application listening on port ${port}`);
 }
-bootstrap();
+
+initializeFirebase();
+bootstrap().catch((err) => console.error(err));

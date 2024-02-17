@@ -36,14 +36,36 @@ generator nestjsDto {
   prettier                        = "true"
 }
 
+attribute @DtoReadOnly()
+attribute @DtoCreateHidden()
+attribute @DtoUpdateHidden()
+attribute @DtoEntityHidden()
+attribute @DtoApiHidden()
+attribute @DtoCreateOptional()
+attribute @DtoUpdateOptional()
+attribute @DtoRelationRequired()
+attribute @DtoRelationCanCreateOnCreate()
+attribute @DtoRelationCanConnectOnCreate()
+attribute @DtoRelationCanCreateOnUpdate()
+attribute @DtoRelationCanConnectOnUpdate()
+attribute @DtoRelationCanDisconnectOnUpdate()
+attribute @DtoRelationIncludeId()
+attribute @DtoTypeFullUpdate()
+
+enum Role {
+  ADMIN
+  USER
+}
+
 model User {
-  id        Int      @id @default(autoincrement())
+  id        String      @id @default(uuid()) @DtoCreateOptional()
   email     String   @unique
-  fullName      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  deletedAt DateTime?
+  fullName      String
+  role      Role       @default(USER) @DtoCreateOptional() 
+  createdAt DateTime @default(now()) @DtoReadOnly()
+  updatedAt DateTime @updatedAt @DtoReadOnly()
+  deletedAt DateTime? @DtoReadOnly()
 
   @@deny('read', deletedAt != null)
-  @@allow('all', auth().id == id)
+  @@allow('all', auth().id == id || auth().role == "ADMIN")
 }
