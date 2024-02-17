@@ -1,0 +1,17 @@
+version: '3.7'
+name: 'reminr-environment'
+
+services:
+  db:
+    image: postgres:15-alpine3.18
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Str0ngP@ssw0rd
+    ports:
+      - '5432:5432'
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:
