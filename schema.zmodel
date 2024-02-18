@@ -61,11 +61,158 @@ model User {
   id        String      @id @default(uuid()) @DtoCreateOptional()
   email     String   @unique
   fullName      String
-  role      Role       @default(USER) @DtoCreateOptional() 
+  role      Role       @default(USER) @DtoCreateOptional()
+  phoneNumber String
+  stickyReminder Boolean @default(false) @DtoCreateOptional() @DtoUpdateOptional()
+  isVerified Boolean @default(false) @DtoReadOnly()
+  createdAt DateTime @default(now()) @DtoReadOnly()
+  updatedAt DateTime @updatedAt @DtoReadOnly()
+  deletedAt DateTime? @DtoReadOnly()
+	medications Medication[]
+  inrTests InrTest[]
+  scores WellnessScore[]
+  incentives Incentive[]
+  redeems Redeem[]
+
+  @@deny('read', deletedAt != null)
+  @@allow('all', auth().id == id || auth().role == "ADMIN")
+}
+
+enum Frequency {
+  DAILY
+  SPECIFIC_DAYS
+  DAYS_INTERVAL
+  AS_NEEDED
+}
+
+enum Day {
+  SUNDAY
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+}
+
+model Medication {
+  id       String      @id @default(uuid())
+  name     String
+  frequency Frequency
+  specificDays Day[]
+  intervalCount    Int?
+  intervalUnit     String?
+  startDate DateTime @db.Date
+  userId   String
+  user     User @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now()) @DtoReadOnly()
+  updatedAt DateTime @updatedAt @DtoReadOnly()
+  deletedAt DateTime? @DtoReadOnly()
+	reminders Reminder[]
+
+  @@deny('read', deletedAt != null)
+  @@allow('all', auth().id == userId)
+}
+
+model Reminder {
+  id      String      @id @default(uuid())
+  title   String
+  description String?
+  acknowledgedAt DateTime?
+  status  Boolean?
+  remindAt DateTime
+  medicationId String
+  medication Medication @relation(fields: [medicationId], references: [id])
   createdAt DateTime @default(now()) @DtoReadOnly()
   updatedAt DateTime @updatedAt @DtoReadOnly()
   deletedAt DateTime? @DtoReadOnly()
 
   @@deny('read', deletedAt != null)
-  @@allow('all', auth().id == id || auth().role == "ADMIN")
+  @@allow('all', auth().id == medication.userId)
+}
+
+model InrTest {
+  id      String      @id @default(uuid())
+  inrValue Float
+  remarks String?
+  date    DateTime @db.Date
+  verificationImage   String?
+  userId  String
+  user    User @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now()) @DtoReadOnly()
+  updatedAt DateTime @updatedAt @DtoReadOnly()
+  deletedAt DateTime? @DtoReadOnly()
+
+  @@deny('read', deletedAt != null)
+  @@allow('all', auth().id == userId)
+}
+
+model WellnessScore {
+  id      String      @id @default(uuid())
+  score   Float
+  remarks String?
+  date    DateTime @db.Date
+  userId  String
+  user    User @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now()) @DtoReadOnly()
+  updatedAt DateTime @updatedAt @DtoReadOnly()
+  deletedAt DateTime? @DtoReadOnly()
+
+  @@deny('read', deletedAt != null)
+  @@allow('all', auth().id == userId)
+}
+
+model Incentive {
+  id      String      @id @default(uuid())
+  amount Float
+  isRedeemed Boolean @default(false)
+  redeemedAmount Float?
+  userId  String
+  user    User @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now()) @DtoReadOnly()
+  updatedAt DateTime @updatedAt @DtoReadOnly()
+  deletedAt DateTime? @DtoReadOnly()
+	redeems IncentivesOnRedeems[]
+
+  @@deny('read', deletedAt != null)
+  @@allow('all', auth().id == userId)
+
+}
+
+enum RedeemMethod {
+  GIFTCARD
+}
+
+enum GiftCardType {
+  AMAZON
+  WALMART
+  TARGET
+  OTHER
+}
+
+model Redeem {
+  id      String      @id @default(uuid())
+  method  RedeemMethod
+  giftCardType GiftCardType?
+  giftCardCode String?
+  processedAt DateTime?
+  userId  String
+  user    User @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now()) @DtoReadOnly()
+  updatedAt DateTime @updatedAt @DtoReadOnly()
+  deletedAt DateTime? @DtoReadOnly()
+	incentives IncentivesOnRedeems[]
+
+  @@deny('read', deletedAt != null)
+  @@allow('all', auth().id == userId)
+
+}
+
+model IncentivesOnRedeems {
+  incentiveId String
+  redeemId    String
+  incentive   Incentive @relation(fields: [incentiveId], references: [id])
+  redeem      Redeem @relation(fields: [redeemId], references: [id])
+
+  @@id([incentiveId, redeemId])
 }

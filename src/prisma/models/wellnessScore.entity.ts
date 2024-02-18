@@ -1,23 +1,30 @@
-import { Role } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
+import { User } from './user.entity';
 
-export class UserDto {
+export class WellnessScore {
   @ApiProperty()
   id: string;
-  @ApiProperty()
-  email: string;
-  @ApiProperty()
-  fullName: string;
   @ApiProperty({
-    enum: Role,
+    type: 'number',
+    format: 'float',
   })
-  role: Role;
+  score: number;
+  @ApiProperty({
+    nullable: true,
+  })
+  remarks: string | null;
+  @ApiProperty({
+    type: 'string',
+    format: 'date-time',
+  })
+  date: Date;
   @ApiProperty()
-  phoneNumber: string;
-  @ApiProperty()
-  stickyReminder: boolean;
-  @ApiProperty()
-  isVerified: boolean;
+  userId: string;
+  @ApiProperty({
+    type: () => User,
+    required: false,
+  })
+  user?: User;
   @ApiProperty({
     type: 'string',
     format: 'date-time',

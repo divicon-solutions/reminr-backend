@@ -1,23 +1,21 @@
-import { Role } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class UserDto {
+export class IncentiveDto {
   @ApiProperty()
   id: string;
-  @ApiProperty()
-  email: string;
-  @ApiProperty()
-  fullName: string;
   @ApiProperty({
-    enum: Role,
+    type: 'number',
+    format: 'float',
   })
-  role: Role;
+  amount: number;
   @ApiProperty()
-  phoneNumber: string;
-  @ApiProperty()
-  stickyReminder: boolean;
-  @ApiProperty()
-  isVerified: boolean;
+  isRedeemed: boolean;
+  @ApiProperty({
+    type: 'number',
+    format: 'float',
+    nullable: true,
+  })
+  redeemedAmount: number | null;
   @ApiProperty({
     type: 'string',
     format: 'date-time',

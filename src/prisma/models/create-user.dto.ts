@@ -1,6 +1,6 @@
 import { Role } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateUserDto {
   @ApiProperty({
@@ -23,4 +23,14 @@ export class CreateUserDto {
   })
   @IsOptional()
   role?: Role;
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  phoneNumber: string;
+  @ApiProperty({
+    default: false,
+  })
+  @IsOptional()
+  @IsBoolean()
+  stickyReminder?: boolean;
 }
