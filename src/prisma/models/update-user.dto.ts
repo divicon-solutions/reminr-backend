@@ -16,10 +16,11 @@ export class UpdateUserDto {
   fullName?: string;
   @ApiProperty({
     required: false,
+    nullable: true,
   })
   @IsOptional()
   @IsString()
-  phoneNumber?: string;
+  phoneNumber?: string | null;
   @ApiProperty({
     default: false,
     required: false,

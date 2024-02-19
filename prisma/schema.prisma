@@ -75,7 +75,7 @@ model User {
   fullName       String
   /// @DtoCreateOptional
   role           Role            @default(USER)
-  phoneNumber    String
+  phoneNumber    String?
   /// @DtoCreateOptional
   /// @DtoUpdateOptional
   stickyReminder Boolean         @default(false)

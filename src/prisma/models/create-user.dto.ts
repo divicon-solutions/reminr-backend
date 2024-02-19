@@ -23,10 +23,13 @@ export class CreateUserDto {
   })
   @IsOptional()
   role?: Role;
-  @ApiProperty()
-  @IsNotEmpty()
+  @ApiProperty({
+    required: false,
+    nullable: true,
+  })
+  @IsOptional()
   @IsString()
-  phoneNumber: string;
+  phoneNumber?: string | null;
   @ApiProperty({
     default: false,
   })

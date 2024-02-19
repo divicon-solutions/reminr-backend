@@ -17,8 +17,10 @@ export class User {
     enum: Role,
   })
   role: Role;
-  @ApiProperty()
-  phoneNumber: string;
+  @ApiProperty({
+    nullable: true,
+  })
+  phoneNumber: string | null;
   @ApiProperty()
   stickyReminder: boolean;
   @ApiProperty()
