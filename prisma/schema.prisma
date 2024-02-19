@@ -124,6 +124,7 @@ model Reminder {
   acknowledgedAt DateTime?
   status         Boolean?
   remindAt       DateTime
+  /// @DtoRelationIncludeId
   medicationId   String
   medication     Medication @relation(fields: [medicationId], references: [id])
   /// @DtoReadOnly

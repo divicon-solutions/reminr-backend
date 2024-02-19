@@ -24,6 +24,8 @@ export class ReminderDto {
     format: 'date-time',
   })
   remindAt: Date;
+  @ApiProperty()
+  medicationId: string;
   @ApiProperty({
     type: 'string',
     format: 'date-time',

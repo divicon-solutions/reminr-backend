@@ -39,4 +39,10 @@ export class UpdateReminderDto {
   @IsOptional()
   @IsDateString()
   remindAt?: Date;
+  @ApiProperty({
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  medicationId?: string;
 }

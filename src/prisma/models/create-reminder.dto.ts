@@ -42,4 +42,8 @@ export class CreateReminderDto {
   @IsNotEmpty()
   @IsDateString()
   remindAt: Date;
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  medicationId: string;
 }
