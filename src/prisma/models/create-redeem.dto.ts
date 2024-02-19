@@ -3,11 +3,19 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   IsDateString,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
 } from 'class-validator';
 
 export class CreateRedeemDto {
+  @ApiProperty({
+    type: 'number',
+    format: 'float',
+  })
+  @IsNotEmpty()
+  @IsNumber()
+  amount: number;
   @ApiProperty({
     enum: RedeemMethod,
   })

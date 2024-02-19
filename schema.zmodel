@@ -192,6 +192,7 @@ enum GiftCardType {
 
 model Redeem {
   id      String      @id @default(uuid())
+  amount Float
   method  RedeemMethod
   giftCardType GiftCardType?
   giftCardCode String?

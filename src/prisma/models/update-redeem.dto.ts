@@ -1,8 +1,16 @@
 import { RedeemMethod, GiftCardType } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDateString, IsOptional, IsString } from 'class-validator';
+import { IsDateString, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class UpdateRedeemDto {
+  @ApiProperty({
+    type: 'number',
+    format: 'float',
+    required: false,
+  })
+  @IsOptional()
+  @IsNumber()
+  amount?: number;
   @ApiProperty({
     enum: RedeemMethod,
     required: false,

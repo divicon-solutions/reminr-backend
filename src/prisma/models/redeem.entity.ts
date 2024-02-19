@@ -7,6 +7,11 @@ export class Redeem {
   @ApiProperty()
   id: string;
   @ApiProperty({
+    type: 'number',
+    format: 'float',
+  })
+  amount: number;
+  @ApiProperty({
     enum: RedeemMethod,
   })
   method: RedeemMethod;

@@ -192,6 +192,7 @@ model Incentive {
 /// @@allow('all', auth().id == userId)
 model Redeem {
   id           String                @id() @default(uuid())
+  amount       Float
   method       RedeemMethod
   giftCardType GiftCardType?
   giftCardCode String?
