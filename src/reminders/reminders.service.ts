@@ -1,9 +1,9 @@
 import {
   CreateReminderDto,
-  ReminderDto,
   PrismaService,
   UpdateReminderDto,
   User,
+  Reminder,
 } from '@app/prisma';
 import { Injectable } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
@@ -15,13 +15,16 @@ export class RemindersService {
   async create(createReminderDto: CreateReminderDto, user: User) {
     const result = await this.prisma.getClient(user).reminder.create({
       data: createReminderDto,
+      include: { medication: true },
     });
-    return plainToInstance(ReminderDto, result);
+    return plainToInstance(Reminder, result);
   }
 
   async findAll(user: User) {
-    const result = await this.prisma.getClient(user).reminder.findMany();
-    return plainToInstance(ReminderDto, result);
+    const result = await this.prisma
+      .getClient(user)
+      .reminder.findMany({ include: { medication: true } });
+    return plainToInstance(Reminder, result);
   }
 
   async findOne(id: string, user: User) {
@@ -29,8 +32,9 @@ export class RemindersService {
       where: {
         id,
       },
+      include: { medication: true },
     });
-    return plainToInstance(ReminderDto, result);
+    return plainToInstance(Reminder, result);
   }
 
   async update(id: string, updateReminderDto: UpdateReminderDto, user: User) {
@@ -39,8 +43,9 @@ export class RemindersService {
         id,
       },
       data: updateReminderDto,
+      include: { medication: true },
     });
-    return plainToInstance(ReminderDto, result);
+    return plainToInstance(Reminder, result);
   }
 
   async remove(id: string, user: User) {
@@ -49,6 +54,6 @@ export class RemindersService {
         id,
       },
     });
-    return plainToInstance(ReminderDto, result);
+    return result;
   }
 }

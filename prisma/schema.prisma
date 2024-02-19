@@ -55,6 +55,12 @@ enum Day {
   SATURDAY
 }
 
+enum IntervalUnit {
+  DAY
+  WEEK
+  MONTH
+}
+
 enum RedeemMethod {
   GIFTCARD
 }
@@ -87,31 +93,40 @@ model User {
   updatedAt      DateTime        @updatedAt()
   /// @DtoReadOnly
   deletedAt      DateTime?
+  /// @DtoEntityHidden
   medications    Medication[]
+  /// @DtoEntityHidden
   inrTests       InrTest[]
+  /// @DtoEntityHidden
   scores         WellnessScore[]
+  /// @DtoEntityHidden
   incentives     Incentive[]
+  /// @DtoEntityHidden
   redeems        Redeem[]
 }
 
 /// @@deny('read', deletedAt != null)
 /// @@allow('all', auth().id == userId)
 model Medication {
-  id            String     @id() @default(uuid())
+  id            String        @id() @default(uuid())
   name          String
+  dosage        String
   frequency     Frequency
+  /// @DtoCreateOptional
+  /// @DtoUpdateOptional
   specificDays  Day[]
   intervalCount Int?
-  intervalUnit  String?
-  startDate     DateTime   @db.Date()
+  intervalUnit  IntervalUnit?
+  startDate     DateTime      @db.Date()
   userId        String
-  user          User       @relation(fields: [userId], references: [id])
+  user          User          @relation(fields: [userId], references: [id])
   /// @DtoReadOnly
-  createdAt     DateTime   @default(now())
+  createdAt     DateTime      @default(now())
   /// @DtoReadOnly
-  updatedAt     DateTime   @updatedAt()
+  updatedAt     DateTime      @updatedAt()
   /// @DtoReadOnly
   deletedAt     DateTime?
+  /// @DtoEntityHidden
   reminders     Reminder[]
 }
 
@@ -185,6 +200,7 @@ model Incentive {
   updatedAt      DateTime              @updatedAt()
   /// @DtoReadOnly
   deletedAt      DateTime?
+  /// @DtoEntityHidden
   redeems        IncentivesOnRedeems[]
 }
 
@@ -205,6 +221,7 @@ model Redeem {
   updatedAt    DateTime              @updatedAt()
   /// @DtoReadOnly
   deletedAt    DateTime?
+  /// @DtoEntityHidden
   incentives   IncentivesOnRedeems[]
 }
 

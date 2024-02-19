@@ -8,11 +8,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { MedicationsService } from './medications.service';
-import {
-  CreateMedicationDto,
-  MedicationDto,
-  UpdateMedicationDto,
-} from '@app/prisma';
+import { CreateMedicationDto, MedicationDto, UpdateMedicationDto } from './dto';
 import { ApiTags } from '@nestjs/swagger';
 import { ApiSuccessResponse, CurrentUser } from '@app/shared';
 

@@ -51,6 +51,7 @@ attribute @DtoRelationCanConnectOnUpdate()
 attribute @DtoRelationCanDisconnectOnUpdate()
 attribute @DtoRelationIncludeId()
 attribute @DtoTypeFullUpdate()
+attribute @DtoCreateValidateIf(condition: Any)
 
 enum Role {
   ADMIN
@@ -68,11 +69,11 @@ model User {
   createdAt DateTime @default(now()) @DtoReadOnly()
   updatedAt DateTime @updatedAt @DtoReadOnly()
   deletedAt DateTime? @DtoReadOnly()
-	medications Medication[]
-  inrTests InrTest[]
-  scores WellnessScore[]
-  incentives Incentive[]
-  redeems Redeem[]
+	medications Medication[] @DtoEntityHidden()
+  inrTests InrTest[] @DtoEntityHidden()
+  scores WellnessScore[] @DtoEntityHidden()
+  incentives Incentive[] @DtoEntityHidden()
+  redeems Redeem[] @DtoEntityHidden()
 
   @@deny('read', deletedAt != null)
   @@allow('all', auth().id == id || auth().role == "ADMIN")
@@ -95,20 +96,27 @@ enum Day {
   SATURDAY
 }
 
+enum IntervalUnit {
+  DAY
+  WEEK
+  MONTH
+}
+
 model Medication {
   id       String      @id @default(uuid())
   name     String
+  dosage   String
   frequency Frequency
-  specificDays Day[]
-  intervalCount    Int?
-  intervalUnit     String?
+  specificDays Day[] @DtoCreateOptional() @DtoUpdateOptional()
+  intervalCount    Int? 
+  intervalUnit     IntervalUnit?
   startDate DateTime @db.Date
   userId   String
   user     User @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now()) @DtoReadOnly()
   updatedAt DateTime @updatedAt @DtoReadOnly()
   deletedAt DateTime? @DtoReadOnly()
-	reminders Reminder[]
+	reminders Reminder[] @DtoEntityHidden()
 
   @@deny('read', deletedAt != null)
   @@allow('all', auth().id == userId)
@@ -172,7 +180,7 @@ model Incentive {
   createdAt DateTime @default(now()) @DtoReadOnly()
   updatedAt DateTime @updatedAt @DtoReadOnly()
   deletedAt DateTime? @DtoReadOnly()
-	redeems IncentivesOnRedeems[]
+	redeems IncentivesOnRedeems[] @DtoEntityHidden()
 
   @@deny('read', deletedAt != null)
   @@allow('all', auth().id == userId)
@@ -202,7 +210,7 @@ model Redeem {
   createdAt DateTime @default(now()) @DtoReadOnly()
   updatedAt DateTime @updatedAt @DtoReadOnly()
   deletedAt DateTime? @DtoReadOnly()
-	incentives IncentivesOnRedeems[]
+	incentives IncentivesOnRedeems[] @DtoEntityHidden()
 
   @@deny('read', deletedAt != null)
   @@allow('all', auth().id == userId)

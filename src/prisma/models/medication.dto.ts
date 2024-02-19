@@ -1,4 +1,4 @@
-import { Frequency, Day } from '@prisma/client';
+import { Frequency, Day, IntervalUnit } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class MedicationDto {
@@ -6,6 +6,8 @@ export class MedicationDto {
   id: string;
   @ApiProperty()
   name: string;
+  @ApiProperty()
+  dosage: string;
   @ApiProperty({
     enum: Frequency,
   })
@@ -21,9 +23,10 @@ export class MedicationDto {
   })
   intervalCount: number | null;
   @ApiProperty({
+    enum: IntervalUnit,
     nullable: true,
   })
-  intervalUnit: string | null;
+  intervalUnit: IntervalUnit | null;
   @ApiProperty({
     type: 'string',
     format: 'date-time',

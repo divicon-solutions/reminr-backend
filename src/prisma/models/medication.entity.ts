@@ -1,13 +1,14 @@
-import { Frequency, Day } from '@prisma/client';
+import { Frequency, Day, IntervalUnit } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 import { User } from './user.entity';
-import { Reminder } from './reminder.entity';
 
 export class Medication {
   @ApiProperty()
   id: string;
   @ApiProperty()
   name: string;
+  @ApiProperty()
+  dosage: string;
   @ApiProperty({
     enum: Frequency,
   })
@@ -23,9 +24,10 @@ export class Medication {
   })
   intervalCount: number | null;
   @ApiProperty({
+    enum: IntervalUnit,
     nullable: true,
   })
-  intervalUnit: string | null;
+  intervalUnit: IntervalUnit | null;
   @ApiProperty({
     type: 'string',
     format: 'date-time',
@@ -54,10 +56,4 @@ export class Medication {
     nullable: true,
   })
   deletedAt: Date | null;
-  @ApiProperty({
-    type: () => Reminder,
-    isArray: true,
-    required: false,
-  })
-  reminders?: Reminder[];
 }

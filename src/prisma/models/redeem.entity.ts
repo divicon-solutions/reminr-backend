@@ -1,7 +1,6 @@
 import { RedeemMethod, GiftCardType } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 import { User } from './user.entity';
-import { IncentivesOnRedeems } from './incentivesOnRedeems.entity';
 
 export class Redeem {
   @ApiProperty()
@@ -53,10 +52,4 @@ export class Redeem {
     nullable: true,
   })
   deletedAt: Date | null;
-  @ApiProperty({
-    type: () => IncentivesOnRedeems,
-    isArray: true,
-    required: false,
-  })
-  incentives?: IncentivesOnRedeems[];
 }

@@ -8,7 +8,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { RemindersService } from './reminders.service';
-import { ReminderDto, CreateReminderDto, UpdateReminderDto } from '@app/prisma';
+import { CreateReminderDto, UpdateReminderDto, Reminder } from '@app/prisma';
 import { ApiSuccessResponse, CurrentUser } from '@app/shared';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -17,7 +17,7 @@ import { ApiTags } from '@nestjs/swagger';
 export class RemindersController {
   constructor(private readonly remindersService: RemindersService) {}
 
-  @ApiSuccessResponse(ReminderDto, { status: 201 })
+  @ApiSuccessResponse(Reminder, { status: 201 })
   @Post()
   async create(
     @Body() createReminderDto: CreateReminderDto,
@@ -37,7 +37,7 @@ export class RemindersController {
     return this.remindersService.findOne(id, user);
   }
 
-  @ApiSuccessResponse(ReminderDto)
+  @ApiSuccessResponse(Reminder)
   @Patch(':id')
   async update(
     @Param('id') id: string,

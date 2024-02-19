@@ -1,4 +1,4 @@
-import { Frequency, Day } from '@prisma/client';
+import { Frequency, Day, IntervalUnit } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsArray,
@@ -15,6 +15,12 @@ export class UpdateMedicationDto {
   @IsOptional()
   @IsString()
   name?: string;
+  @ApiProperty({
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  dosage?: string;
   @ApiProperty({
     enum: Frequency,
     required: false,
@@ -38,12 +44,12 @@ export class UpdateMedicationDto {
   @IsInt()
   intervalCount?: number | null;
   @ApiProperty({
+    enum: IntervalUnit,
     required: false,
     nullable: true,
   })
   @IsOptional()
-  @IsString()
-  intervalUnit?: string | null;
+  intervalUnit?: IntervalUnit | null;
   @ApiProperty({
     type: 'string',
     format: 'date-time',

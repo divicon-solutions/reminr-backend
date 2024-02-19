@@ -1,4 +1,4 @@
-import { Frequency, Day } from '@prisma/client';
+import { Frequency, Day, IntervalUnit } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsArray,
@@ -14,6 +14,10 @@ export class CreateMedicationDto {
   @IsNotEmpty()
   @IsString()
   name: string;
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  dosage: string;
   @ApiProperty({
     enum: Frequency,
   })
@@ -22,9 +26,9 @@ export class CreateMedicationDto {
   @ApiProperty({
     enum: Day,
   })
-  @IsNotEmpty()
+  @IsOptional()
   @IsArray()
-  specificDays: Day[];
+  specificDays?: Day[];
   @ApiProperty({
     type: 'integer',
     format: 'int32',
@@ -35,12 +39,12 @@ export class CreateMedicationDto {
   @IsInt()
   intervalCount?: number | null;
   @ApiProperty({
+    enum: IntervalUnit,
     required: false,
     nullable: true,
   })
   @IsOptional()
-  @IsString()
-  intervalUnit?: string | null;
+  intervalUnit?: IntervalUnit | null;
   @ApiProperty({
     type: 'string',
     format: 'date-time',

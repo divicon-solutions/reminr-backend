@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { User } from './user.entity';
-import { IncentivesOnRedeems } from './incentivesOnRedeems.entity';
 
 export class Incentive {
   @ApiProperty()
@@ -41,10 +40,4 @@ export class Incentive {
     nullable: true,
   })
   deletedAt: Date | null;
-  @ApiProperty({
-    type: () => IncentivesOnRedeems,
-    isArray: true,
-    required: false,
-  })
-  redeems?: IncentivesOnRedeems[];
 }

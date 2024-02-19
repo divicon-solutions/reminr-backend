@@ -1,12 +1,7 @@
-import {
-  CreateMedicationDto,
-  MedicationDto,
-  PrismaService,
-  UpdateMedicationDto,
-  User,
-} from '@app/prisma';
+import { PrismaService, User } from '@app/prisma';
 import { Injectable } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
+import { CreateMedicationDto, MedicationDto, UpdateMedicationDto } from './dto';
 
 @Injectable()
 export class MedicationsService {
