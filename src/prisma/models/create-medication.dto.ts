@@ -14,10 +14,20 @@ export class CreateMedicationDto {
   @IsNotEmpty()
   @IsString()
   name: string;
-  @ApiProperty()
-  @IsNotEmpty()
+  @ApiProperty({
+    required: false,
+    nullable: true,
+  })
+  @IsOptional()
   @IsString()
-  dosage: string;
+  dosage?: string | null;
+  @ApiProperty({
+    type: 'integer',
+    format: 'int32',
+  })
+  @IsNotEmpty()
+  @IsInt()
+  noOfPills: number;
   @ApiProperty({
     enum: Frequency,
   })

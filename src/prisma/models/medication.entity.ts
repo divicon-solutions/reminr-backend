@@ -7,8 +7,15 @@ export class Medication {
   id: string;
   @ApiProperty()
   name: string;
-  @ApiProperty()
-  dosage: string;
+  @ApiProperty({
+    nullable: true,
+  })
+  dosage: string | null;
+  @ApiProperty({
+    type: 'integer',
+    format: 'int32',
+  })
+  noOfPills: number;
   @ApiProperty({
     enum: Frequency,
   })

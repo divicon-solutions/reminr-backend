@@ -17,10 +17,19 @@ export class UpdateMedicationDto {
   name?: string;
   @ApiProperty({
     required: false,
+    nullable: true,
   })
   @IsOptional()
   @IsString()
-  dosage?: string;
+  dosage?: string | null;
+  @ApiProperty({
+    type: 'integer',
+    format: 'int32',
+    required: false,
+  })
+  @IsOptional()
+  @IsInt()
+  noOfPills?: number;
   @ApiProperty({
     enum: Frequency,
     required: false,

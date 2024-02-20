@@ -105,7 +105,8 @@ enum IntervalUnit {
 model Medication {
   id       String      @id @default(uuid())
   name     String
-  dosage   String
+  dosage   String?
+  noOfPills Int
   frequency Frequency
   specificDays Day[] @DtoCreateOptional() @DtoUpdateOptional()
   intervalCount    Int? 

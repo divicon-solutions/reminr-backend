@@ -110,7 +110,8 @@ model User {
 model Medication {
   id            String        @id() @default(uuid())
   name          String
-  dosage        String
+  dosage        String?
+  noOfPills     Int
   frequency     Frequency
   /// @DtoCreateOptional
   /// @DtoUpdateOptional
