@@ -13,6 +13,8 @@ import { RemindersModule } from './reminders/reminders.module';
 import { WellnessScoresModule } from './wellness-scores/wellness-scores.module';
 import { IncentivesModule } from './incentives/incentives.module';
 import { RedeemsModule } from './redeems/redeems.module';
+import { DashboardModule } from './dashboard/dashboard.module';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
   imports: [
@@ -25,6 +27,8 @@ import { RedeemsModule } from './redeems/redeems.module';
     WellnessScoresModule,
     IncentivesModule,
     RedeemsModule,
+    DashboardModule,
+    UploadModule,
   ],
   controllers: [AppController],
   providers: [
