@@ -40,6 +40,11 @@ export class Medication {
     format: 'date-time',
   })
   startDate: Date;
+  @ApiProperty({
+    type: 'string',
+    format: 'date-time',
+  })
+  time: Date;
   @ApiProperty()
   userId: string;
   @ApiProperty({

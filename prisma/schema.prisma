@@ -119,6 +119,7 @@ model Medication {
   intervalCount Int?
   intervalUnit  IntervalUnit?
   startDate     DateTime      @db.Date()
+  time          DateTime      @db.Time()
   userId        String
   user          User          @relation(fields: [userId], references: [id])
   /// @DtoReadOnly

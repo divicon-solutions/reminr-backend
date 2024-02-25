@@ -43,6 +43,11 @@ export class MedicationDto {
     type: 'string',
     format: 'date-time',
   })
+  time: Date;
+  @ApiProperty({
+    type: 'string',
+    format: 'date-time',
+  })
   createdAt: Date;
   @ApiProperty({
     type: 'string',

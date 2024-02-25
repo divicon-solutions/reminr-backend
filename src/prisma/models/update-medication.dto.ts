@@ -67,4 +67,12 @@ export class UpdateMedicationDto {
   @IsOptional()
   @IsDateString()
   startDate?: Date;
+  @ApiProperty({
+    type: 'string',
+    format: 'date-time',
+    required: false,
+  })
+  @IsOptional()
+  @IsDateString()
+  time?: Date;
 }

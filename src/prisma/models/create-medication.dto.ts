@@ -62,4 +62,11 @@ export class CreateMedicationDto {
   @IsNotEmpty()
   @IsDateString()
   startDate: Date;
+  @ApiProperty({
+    type: 'string',
+    format: 'date-time',
+  })
+  @IsNotEmpty()
+  @IsDateString()
+  time: Date;
 }
