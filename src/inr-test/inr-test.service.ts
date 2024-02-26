@@ -27,7 +27,9 @@ export class InrTestService {
   }
 
   async findAll(user: User) {
-    const result = await this.prisma.getClient(user).inrTest.findMany();
+    const result = await this.prisma
+      .getClient(user)
+      .inrTest.findMany({ orderBy: { date: 'asc' } });
     return plainToInstance(InrTestDto, result);
   }
 

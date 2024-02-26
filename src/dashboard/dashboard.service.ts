@@ -31,7 +31,7 @@ export class DashboardService {
       });
     const inrTests = await this.prisma.getClient(user).inrTest.findMany({
       select: { id: true, date: true, inrValue: true },
-      orderBy: { date: 'desc' },
+      orderBy: { date: 'asc' },
     });
 
     const result: DashboardDataDto = {
