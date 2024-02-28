@@ -38,3 +38,8 @@ export * from './create-incentivesOnRedeems.dto';
 export * from './update-incentivesOnRedeems.dto';
 export * from './incentivesOnRedeems.entity';
 export * from './incentivesOnRedeems.dto';
+export * from './connect-callbackRequest.dto';
+export * from './create-callbackRequest.dto';
+export * from './update-callbackRequest.dto';
+export * from './callbackRequest.entity';
+export * from './callbackRequest.dto';

@@ -76,33 +76,34 @@ enum GiftCardType {
 /// @@allow('all', auth().id == id || auth().role == 'ADMIN')
 model User {
   /// @DtoCreateOptional
-  id             String          @id() @default(uuid())
-  email          String          @unique()
-  fullName       String
+  id               String            @id() @default(uuid())
+  email            String            @unique()
+  fullName         String
   /// @DtoCreateOptional
-  role           Role            @default(USER)
-  phoneNumber    String?
+  role             Role              @default(USER)
+  phoneNumber      String?
   /// @DtoCreateOptional
   /// @DtoUpdateOptional
-  stickyReminder Boolean         @default(false)
+  stickyReminder   Boolean           @default(false)
   /// @DtoReadOnly
-  isVerified     Boolean         @default(false)
+  isVerified       Boolean           @default(false)
   /// @DtoReadOnly
-  createdAt      DateTime        @default(now())
+  createdAt        DateTime          @default(now())
   /// @DtoReadOnly
-  updatedAt      DateTime        @updatedAt()
+  updatedAt        DateTime          @updatedAt()
   /// @DtoReadOnly
-  deletedAt      DateTime?
+  deletedAt        DateTime?
   /// @DtoEntityHidden
-  medications    Medication[]
+  medications      Medication[]
   /// @DtoEntityHidden
-  inrTests       InrTest[]
+  inrTests         InrTest[]
   /// @DtoEntityHidden
-  scores         WellnessScore[]
+  scores           WellnessScore[]
   /// @DtoEntityHidden
-  incentives     Incentive[]
+  incentives       Incentive[]
   /// @DtoEntityHidden
-  redeems        Redeem[]
+  redeems          Redeem[]
+  callbackRequests CallbackRequest[]
 }
 
 /// @@deny('read', deletedAt != null)
@@ -234,4 +235,21 @@ model IncentivesOnRedeems {
   redeem      Redeem    @relation(fields: [redeemId], references: [id])
 
   @@id([incentiveId, redeemId])
+}
+
+/// @@deny('read', deletedAt != null)
+/// @@allow('all', auth().id == userId)
+model CallbackRequest {
+  id         String    @id() @default(uuid())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id])
+  /// @DtoCreateOptional
+  /// @DtoUpdateOptional
+  isResolved Boolean   @default(false)
+  /// @DtoReadOnly
+  createdAt  DateTime  @default(now())
+  /// @DtoReadOnly
+  updatedAt  DateTime  @updatedAt()
+  /// @DtoReadOnly
+  deletedAt  DateTime?
 }

@@ -15,6 +15,7 @@ import { IncentivesModule } from './incentives/incentives.module';
 import { RedeemsModule } from './redeems/redeems.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { UploadModule } from './upload/upload.module';
+import { CallbackRequestModule } from './callback-request/callback-request.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { UploadModule } from './upload/upload.module';
     RedeemsModule,
     DashboardModule,
     UploadModule,
+    CallbackRequestModule,
   ],
   controllers: [AppController],
   providers: [

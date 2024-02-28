@@ -1,5 +1,6 @@
 import { Role } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
+import { CallbackRequest } from './callbackRequest.entity';
 
 export class User {
   @ApiProperty()
@@ -36,4 +37,10 @@ export class User {
     nullable: true,
   })
   deletedAt: Date | null;
+  @ApiProperty({
+    type: () => CallbackRequest,
+    isArray: true,
+    required: false,
+  })
+  callbackRequests?: CallbackRequest[];
 }
