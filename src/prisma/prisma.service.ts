@@ -1,8 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Prisma, PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient, User } from '@prisma/client';
 import { enhance } from '@zenstackhq/runtime';
 import { SoftDeleteMiddleware } from './middleware';
-import { User } from './models';
 
 @Injectable()
 export class PrismaService extends PrismaClient<
@@ -19,16 +18,6 @@ export class PrismaService extends PrismaClient<
   }
 
   getClient(user?: User) {
-    return enhance(
-      this,
-      {
-        user: user
-          ? {
-              id: user.id,
-            }
-          : undefined,
-      },
-      { logPrismaQuery: true },
-    );
+    return enhance(this, { user }, { logPrismaQuery: true });
   }
 }

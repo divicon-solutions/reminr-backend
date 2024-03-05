@@ -43,3 +43,8 @@ export * from './create-callbackRequest.dto';
 export * from './update-callbackRequest.dto';
 export * from './callbackRequest.entity';
 export * from './callbackRequest.dto';
+export * from './connect-contactRequest.dto';
+export * from './create-contactRequest.dto';
+export * from './update-contactRequest.dto';
+export * from './contactRequest.entity';
+export * from './contactRequest.dto';

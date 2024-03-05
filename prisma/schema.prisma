@@ -79,7 +79,7 @@ model User {
   id               String            @id() @default(uuid())
   email            String            @unique()
   fullName         String
-  /// @DtoCreateOptional
+  /// @DtoReadOnly
   role             Role              @default(USER)
   phoneNumber      String?
   /// @DtoCreateOptional
@@ -252,4 +252,24 @@ model CallbackRequest {
   updatedAt  DateTime  @updatedAt()
   /// @DtoReadOnly
   deletedAt  DateTime?
+}
+
+/// @@deny('read', deletedAt != null)
+/// @@allow('all', auth().role == 'ADMIN')
+model ContactRequest {
+  id          String    @id() @default(uuid())
+  firstName   String
+  lastName    String
+  email       String
+  phoneNumber String?
+  message     String
+  /// @DtoCreateOptional
+  /// @DtoUpdateOptional
+  isResolved  Boolean   @default(false)
+  /// @DtoReadOnly
+  createdAt   DateTime  @default(now())
+  /// @DtoReadOnly
+  updatedAt   DateTime  @updatedAt()
+  /// @DtoReadOnly
+  deletedAt   DateTime?
 }

@@ -62,7 +62,7 @@ model User {
   id        String      @id @default(uuid()) @DtoCreateOptional()
   email     String   @unique
   fullName      String
-  role      Role       @default(USER) @DtoCreateOptional()
+  role      Role       @default(USER) @DtoReadOnly()
   phoneNumber String?
   stickyReminder Boolean @default(false) @DtoCreateOptional() @DtoUpdateOptional()
   isVerified Boolean @default(false) @DtoReadOnly()
@@ -241,4 +241,20 @@ model CallbackRequest {
 
   @@deny('read', deletedAt != null)
   @@allow('all', auth().id == userId)
+}
+
+model ContactRequest {
+  id String @id @default(uuid())
+  firstName String
+  lastName String
+  email String
+  phoneNumber String?
+  message String
+  isResolved Boolean @default(false) @DtoCreateOptional() @DtoUpdateOptional()
+  createdAt DateTime @default(now()) @DtoReadOnly()
+  updatedAt DateTime @updatedAt @DtoReadOnly()
+  deletedAt DateTime? @DtoReadOnly()
+
+  @@deny('read', deletedAt != null)
+  @@allow('all', auth().role == "ADMIN")
 }

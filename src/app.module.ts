@@ -16,6 +16,7 @@ import { RedeemsModule } from './redeems/redeems.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { UploadModule } from './upload/upload.module';
 import { CallbackRequestModule } from './callback-request/callback-request.module';
+import { ContactRequestModule } from './contact-request/contact-request.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { CallbackRequestModule } from './callback-request/callback-request.modul
     DashboardModule,
     UploadModule,
     CallbackRequestModule,
+    ContactRequestModule,
   ],
   controllers: [AppController],
   providers: [

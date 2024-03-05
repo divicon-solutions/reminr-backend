@@ -1,21 +1,19 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
-export class CreateUserDto {
-  @ApiProperty({
-    default: 'uuid',
-  })
-  @IsOptional()
+export class CreateContactRequestDto {
+  @ApiProperty()
+  @IsNotEmpty()
   @IsString()
-  id?: string;
+  firstName: string;
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  lastName: string;
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
   email: string;
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
-  fullName: string;
   @ApiProperty({
     required: false,
     nullable: true,
@@ -23,10 +21,14 @@ export class CreateUserDto {
   @IsOptional()
   @IsString()
   phoneNumber?: string | null;
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  message: string;
   @ApiProperty({
     default: false,
   })
   @IsOptional()
   @IsBoolean()
-  stickyReminder?: boolean;
+  isResolved?: boolean;
 }
