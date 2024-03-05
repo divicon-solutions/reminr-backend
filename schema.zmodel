@@ -75,10 +75,10 @@ model User {
   incentives Incentive[] @DtoEntityHidden()
   redeems Redeem[] @DtoEntityHidden()
 	callbackRequests CallbackRequest[]
+	pushTokens PushToken[]
 
   @@deny('read', deletedAt != null)
   @@allow('all', auth().id == id || auth().role == "ADMIN")
-
 }
 
 enum Frequency {
@@ -257,4 +257,26 @@ model ContactRequest {
 
   @@deny('read', deletedAt != null)
   @@allow('all', auth().role == "ADMIN")
+}
+
+enum Platform {
+  IOS
+  ANDROID
+}
+
+model PushToken {
+  id String @id @default(uuid())
+  token String
+  apnToken String?
+  device String
+  platform Platform
+  identifier String
+  userId String @DtoRelationIncludeId()
+  user User @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now()) @DtoReadOnly()
+  updatedAt DateTime @updatedAt @DtoReadOnly()
+  deletedAt DateTime? @DtoReadOnly()
+
+  @@deny('read', deletedAt != null)
+  @@allow('all', auth() == user)
 }

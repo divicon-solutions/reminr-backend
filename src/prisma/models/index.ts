@@ -48,3 +48,8 @@ export * from './create-contactRequest.dto';
 export * from './update-contactRequest.dto';
 export * from './contactRequest.entity';
 export * from './contactRequest.dto';
+export * from './connect-pushToken.dto';
+export * from './create-pushToken.dto';
+export * from './update-pushToken.dto';
+export * from './pushToken.entity';
+export * from './pushToken.dto';

@@ -72,6 +72,11 @@ enum GiftCardType {
   OTHER
 }
 
+enum Platform {
+  IOS
+  ANDROID
+}
+
 /// @@deny('read', deletedAt != null)
 /// @@allow('all', auth().id == id || auth().role == 'ADMIN')
 model User {
@@ -104,6 +109,7 @@ model User {
   /// @DtoEntityHidden
   redeems          Redeem[]
   callbackRequests CallbackRequest[]
+  pushTokens       PushToken[]
 }
 
 /// @@deny('read', deletedAt != null)
@@ -272,4 +278,24 @@ model ContactRequest {
   updatedAt   DateTime  @updatedAt()
   /// @DtoReadOnly
   deletedAt   DateTime?
+}
+
+/// @@deny('read', deletedAt != null)
+/// @@allow('all', auth() == user)
+model PushToken {
+  id         String    @id() @default(uuid())
+  token      String
+  apnToken   String?
+  device     String
+  platform   Platform
+  identifier String
+  /// @DtoRelationIncludeId
+  userId     String
+  user       User      @relation(fields: [userId], references: [id])
+  /// @DtoReadOnly
+  createdAt  DateTime  @default(now())
+  /// @DtoReadOnly
+  updatedAt  DateTime  @updatedAt()
+  /// @DtoReadOnly
+  deletedAt  DateTime?
 }

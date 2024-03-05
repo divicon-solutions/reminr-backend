@@ -17,6 +17,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { UploadModule } from './upload/upload.module';
 import { CallbackRequestModule } from './callback-request/callback-request.module';
 import { ContactRequestModule } from './contact-request/contact-request.module';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { ContactRequestModule } from './contact-request/contact-request.module';
     UploadModule,
     CallbackRequestModule,
     ContactRequestModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [
