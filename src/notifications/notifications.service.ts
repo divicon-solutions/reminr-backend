@@ -14,7 +14,11 @@ export class NotificationsService {
 
   private readonly logger = new Logger(NotificationsService.name);
 
-  async create(createNotificationDto: CreateNotificationDto, user: User) {
+  async create(
+    createNotificationDto: CreateNotificationDto,
+    user: User,
+    isSilent?: boolean,
+  ) {
     const { userId, ...rest } = createNotificationDto;
     const result = await this.prisma.getClient(user).notification.create({
       data: {
@@ -22,7 +26,7 @@ export class NotificationsService {
         user: { connect: { id: userId } },
       },
     });
-    this.sendPushNotification(result);
+    this.sendPushNotification(result, isSilent);
     return plainToInstance(NotificationDto, result);
   }
 
@@ -50,7 +54,7 @@ export class NotificationsService {
         if (isSilent) {
           const payload: messaging.Message = {
             token,
-            data: instanceToPlain(notification.data),
+            data: instanceToPlain(notification),
           };
           return await messaging().send(payload);
         }

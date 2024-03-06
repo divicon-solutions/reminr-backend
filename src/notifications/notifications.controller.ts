@@ -1,4 +1,11 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  DefaultValuePipe,
+  Get,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { NotificationsService } from './notifications.service';
 import { NotificationDto, CreateNotificationDto } from '@app/prisma';
 import { CurrentUser } from '@app/shared';
@@ -14,8 +21,13 @@ export class NotificationsController {
   create(
     @Body() createNotificationDto: CreateNotificationDto,
     @CurrentUser() user,
+    @Query('isSilent', new DefaultValuePipe(false)) isSilent?: boolean,
   ) {
-    return this.notificationsService.create(createNotificationDto, user);
+    return this.notificationsService.create(
+      createNotificationDto,
+      user,
+      isSilent,
+    );
   }
 
   @Get()
