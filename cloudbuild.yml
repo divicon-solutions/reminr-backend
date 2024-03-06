@@ -1,0 +1,29 @@
+steps:
+  - name: 'gcr.io/kaniko-project/executor:latest'
+    args:
+      [
+        '--dockerfile=$_FILE_PATH',
+        '--context=.',
+        '--cache=true',
+        '--cache-ttl=8h',
+        '--destination=gcr.io/$PROJECT_ID/$_IMAGE',
+      ]
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      [
+        'run',
+        'deploy',
+        'reminr-api',
+        '--image',
+        'gcr.io/$PROJECT_ID/reminr-api',
+        '--platform',
+        'managed',
+        '--region',
+        'us-central1',
+        '--allow-unauthenticated',
+        '--no-cpu-throttling',
+        '--env-vars-file',
+        '.env.yml',
+        '--service-account',
+        'reminr-api@$PROJECT_ID.iam.gserviceaccount.com',
+      ]
