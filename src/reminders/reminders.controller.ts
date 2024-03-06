@@ -11,6 +11,7 @@ import { RemindersService } from './reminders.service';
 import { CreateReminderDto, UpdateReminderDto, Reminder } from '@app/prisma';
 import { ApiSuccessResponse, CurrentUser } from '@app/shared';
 import { ApiTags } from '@nestjs/swagger';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 @ApiTags('reminders')
 @Controller('reminders')
@@ -57,5 +58,13 @@ export class RemindersController {
   async remove(@Param('id') id: string, @CurrentUser() user) {
     await this.remindersService.remove(id, user);
     return { message: 'Reminder deleted' };
+  }
+
+  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT, {
+    timeZone: 'America/New_York',
+  })
+  scheduleReminders() {
+    this.remindersService.makeReminders('Asia/Kolkata');
+    return { message: 'Reminders scheduled' };
   }
 }

@@ -8,5 +8,6 @@ import { PrismaModule } from '@app/prisma';
   imports: [PushTokensModule, PrismaModule],
   controllers: [NotificationsController],
   providers: [NotificationsService],
+  exports: [NotificationsService],
 })
 export class NotificationsModule {}

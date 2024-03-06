@@ -5,7 +5,7 @@ export function SoftDeleteMiddleware<T>(): Prisma.Middleware {
     params: Prisma.MiddlewareParams,
     next: (params: Prisma.MiddlewareParams) => Promise<T>,
   ): Promise<T> => {
-    const whiteList: Prisma.ModelName[] = [];
+    const whiteList: Prisma.ModelName[] = [Prisma.ModelName.PushToken];
 
     if (whiteList.includes(params.model)) {
       // Ignore queries for models in the white list

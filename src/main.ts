@@ -23,7 +23,7 @@ function initializeFirebase() {
 }
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { logger: console });
   const logger = new Logger('Main');
   app.setGlobalPrefix('api/v1');
 

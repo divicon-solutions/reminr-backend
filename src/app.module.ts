@@ -18,10 +18,12 @@ import { UploadModule } from './upload/upload.module';
 import { CallbackRequestModule } from './callback-request/callback-request.module';
 import { ContactRequestModule } from './contact-request/contact-request.module';
 import { NotificationsModule } from './notifications/notifications.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ load: [configuration] }),
+    ScheduleModule.forRoot(),
     UsersModule,
     SharedModule,
     MedicationsModule,
