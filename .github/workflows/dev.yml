@@ -27,6 +27,12 @@ jobs:
       - name: Create Env file
         run: |
           echo "${{ secrets.DEV_ENV }}" | base64 --decode > .env.yml
+      - name: Configure Service Account
+        uses: jsdaniell/create-json@v1.2.1
+        with:
+          name: 'serviceAccountKey.json'
+          json: ${{ secrets.FB_SA_DEV }}
+          dir: 'src/config/'
       - name: Configure Docker
         run: |
           gcloud auth configure-docker
