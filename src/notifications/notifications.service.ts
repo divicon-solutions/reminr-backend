@@ -5,7 +5,7 @@ import {
   User,
 } from '@app/prisma';
 import { Injectable, Logger } from '@nestjs/common';
-import { instanceToPlain, plainToInstance } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { messaging } from 'firebase-admin';
 
 @Injectable()
@@ -54,7 +54,11 @@ export class NotificationsService {
         if (isSilent) {
           const payload: messaging.Message = {
             token,
-            data: instanceToPlain(notification),
+            data: {
+              title: notification.title,
+              body: notification.body,
+              metadata: JSON.stringify(notification.data),
+            },
             android: {
               priority: 'high',
             },
