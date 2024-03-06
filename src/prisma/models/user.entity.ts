@@ -2,6 +2,7 @@ import { Role } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 import { CallbackRequest } from './callbackRequest.entity';
 import { PushToken } from './pushToken.entity';
+import { Notification } from './notification.entity';
 
 export class User {
   @ApiProperty()
@@ -50,4 +51,10 @@ export class User {
     required: false,
   })
   pushTokens?: PushToken[];
+  @ApiProperty({
+    type: () => Notification,
+    isArray: true,
+    required: false,
+  })
+  notifications?: Notification[];
 }

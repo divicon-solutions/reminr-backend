@@ -110,6 +110,7 @@ model User {
   redeems          Redeem[]
   callbackRequests CallbackRequest[]
   pushTokens       PushToken[]
+  notifications    Notification[]
 }
 
 /// @@deny('read', deletedAt != null)
@@ -298,4 +299,22 @@ model PushToken {
   updatedAt  DateTime  @updatedAt()
   /// @DtoReadOnly
   deletedAt  DateTime?
+}
+
+/// @@deny('read', deletedAt != null)
+/// @@allow('all', auth() == user)
+model Notification {
+  id        String    @id() @default(uuid())
+  title     String
+  body      String
+  data      Json?
+  /// @DtoRelationIncludeId
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  /// @DtoReadOnly
+  createdAt DateTime  @default(now())
+  /// @DtoReadOnly
+  updatedAt DateTime  @updatedAt()
+  /// @DtoReadOnly
+  deletedAt DateTime?
 }
