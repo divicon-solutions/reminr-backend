@@ -55,6 +55,14 @@ export class NotificationsService {
           const payload: messaging.Message = {
             token,
             data: instanceToPlain(notification),
+            android: {
+              priority: 'high',
+            },
+            apns: {
+              headers: {
+                'apns-priority': '10',
+              },
+            },
           };
           return await messaging().send(payload);
         }
