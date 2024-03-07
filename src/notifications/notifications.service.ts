@@ -57,15 +57,7 @@ export class NotificationsService {
             data: {
               title: notification.title,
               body: notification.body,
-              metadata: JSON.stringify(notification.data),
-            },
-            android: {
-              priority: 'high',
-            },
-            apns: {
-              headers: {
-                'apns-priority': '10',
-              },
+              metaData: JSON.stringify(notification.data),
             },
           };
           return await messaging().send(payload);
