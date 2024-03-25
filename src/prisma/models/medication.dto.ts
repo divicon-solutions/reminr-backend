@@ -44,6 +44,8 @@ export class MedicationDto {
     format: 'date-time',
   })
   time: Date;
+  @ApiProperty()
+  userId: string;
   @ApiProperty({
     type: 'string',
     format: 'date-time',

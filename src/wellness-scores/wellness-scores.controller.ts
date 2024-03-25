@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { WellnessScoresService } from './wellness-scores.service';
 import {
@@ -14,7 +15,7 @@ import {
   UpdateWellnessScoreDto,
 } from '@app/prisma';
 import { ApiSuccessResponse, CurrentUser } from '@app/shared';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('wellness-scores')
 @Controller('wellness-scores')
@@ -34,9 +35,10 @@ export class WellnessScoresController {
     return { message: 'WellnessScore created', result };
   }
 
+  @ApiQuery({ name: 'userId', required: false })
   @Get()
-  findAll(@CurrentUser() user) {
-    return this.wellnessScoresService.findAll(user);
+  findAll(@CurrentUser() user, @Query('userId') userId?: string) {
+    return this.wellnessScoresService.findAll(user, userId);
   }
 
   @Get(':id')

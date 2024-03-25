@@ -6,11 +6,12 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { RedeemsService } from './redeems.service';
 import { RedeemDto, CreateRedeemDto, UpdateRedeemDto } from '@app/prisma';
 import { ApiSuccessResponse, CurrentUser } from '@app/shared';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('redeems')
 @Controller('redeems')
@@ -24,9 +25,10 @@ export class RedeemsController {
     return { message: 'Redeem created', result };
   }
 
+  @ApiQuery({ name: 'userId', required: false })
   @Get()
-  findAll(@CurrentUser() user) {
-    return this.redeemsService.findAll(user);
+  findAll(@CurrentUser() user, @Query('userId') userId?: string) {
+    return this.redeemsService.findAll(user, userId);
   }
 
   @Get(':id')

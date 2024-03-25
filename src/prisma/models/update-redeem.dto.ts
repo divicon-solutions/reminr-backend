@@ -40,4 +40,10 @@ export class UpdateRedeemDto {
   @IsOptional()
   @IsDateString()
   processedAt?: Date | null;
+  @ApiProperty({
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  userId?: string;
 }

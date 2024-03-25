@@ -8,12 +8,13 @@ export class MedicationsService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createMedicationDto: CreateMedicationDto, user: User) {
+    const { userId, ...rest } = createMedicationDto;
     const result = await this.prisma.getClient(user).medication.create({
       data: {
-        ...createMedicationDto,
+        ...rest,
         user: {
           connect: {
-            id: user.id,
+            id: userId,
           },
         },
       },
@@ -21,8 +22,9 @@ export class MedicationsService {
     return plainToInstance(MedicationDto, result);
   }
 
-  async findAll(user: User) {
+  async findAll(user: User, userId?: string) {
     const result = await this.prisma.getClient(user).medication.findMany({
+      where: { userId },
       orderBy: {
         createdAt: 'asc',
       },

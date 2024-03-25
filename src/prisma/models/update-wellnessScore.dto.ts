@@ -25,4 +25,10 @@ export class UpdateWellnessScoreDto {
   @IsOptional()
   @IsDateString()
   date?: Date;
+  @ApiProperty({
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  userId?: string;
 }

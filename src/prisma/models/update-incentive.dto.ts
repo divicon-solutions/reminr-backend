@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsOptional } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class UpdateIncentiveDto {
   @ApiProperty({
@@ -11,12 +11,9 @@ export class UpdateIncentiveDto {
   @IsNumber()
   amount?: number;
   @ApiProperty({
-    type: 'number',
-    format: 'float',
     required: false,
-    nullable: true,
   })
   @IsOptional()
-  @IsNumber()
-  redeemedAmount?: number | null;
+  @IsString()
+  userId?: string;
 }

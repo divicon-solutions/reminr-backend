@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { DashboardService } from './dashboard.service';
 import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '@app/shared';
@@ -9,9 +9,9 @@ import { User } from '@app/prisma';
 export class DashboardController {
   constructor(private readonly dashboardService: DashboardService) {}
 
-  @Get('member-data')
-  async getDashboardData(@CurrentUser() user: User) {
-    return this.dashboardService.getDashboardData(user);
+  @Get('member-data/:id')
+  async getDashboardData(@CurrentUser() user: User, @Param('id') id: string) {
+    return this.dashboardService.getDashboardData(user, id);
   }
 
   @Get('admin-data')

@@ -31,8 +31,9 @@ export class NotificationsController {
     );
   }
 
+  @ApiQuery({ name: 'userId', required: false })
   @Get()
-  findAll(@CurrentUser() user) {
-    return this.notificationsService.findAll(user);
+  findAll(@CurrentUser() user, @Query('userId') userId?: string) {
+    return this.notificationsService.findAll(user, userId);
   }
 }

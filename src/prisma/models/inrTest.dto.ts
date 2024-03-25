@@ -21,6 +21,8 @@ export class InrTestDto {
     nullable: true,
   })
   verificationImage: string | null;
+  @ApiProperty()
+  userId: string;
   @ApiProperty({
     type: 'string',
     format: 'date-time',

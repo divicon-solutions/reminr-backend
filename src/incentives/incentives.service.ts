@@ -13,12 +13,13 @@ export class IncentivesService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createIncentiveDto: CreateIncentiveDto, user: User) {
+    const { userId, ...rest } = createIncentiveDto;
     const result = await this.prisma.getClient(user).incentive.create({
       data: {
-        ...createIncentiveDto,
+        ...rest,
         user: {
           connect: {
-            id: user.id,
+            id: userId,
           },
         },
       },
@@ -26,8 +27,11 @@ export class IncentivesService {
     return plainToInstance(IncentiveDto, result);
   }
 
-  async findAll(user: User) {
-    const result = await this.prisma.getClient(user).incentive.findMany();
+  async findAll(user: User, userId?: string) {
+    const result = await this.prisma.getClient(user).incentive.findMany({
+      where: { userId },
+      orderBy: { createdAt: 'desc' },
+    });
     return plainToInstance(IncentiveDto, result);
   }
 

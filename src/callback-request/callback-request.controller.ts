@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { CallbackRequestService } from './callback-request.service';
 import {
@@ -14,7 +15,7 @@ import {
   UpdateCallbackRequestDto,
 } from '@app/prisma';
 import { ApiSuccessResponse, CurrentUser } from '@app/shared';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('callback-request')
 @Controller('callback-request')
@@ -36,9 +37,10 @@ export class CallbackRequestController {
     return { message: 'CallbackRequest created', result };
   }
 
+  @ApiQuery({ name: 'userId', required: false })
   @Get()
-  findAll(@CurrentUser() user) {
-    return this.callbackRequestService.findAll(user);
+  findAll(@CurrentUser() user, @Query('userId') userId?: string) {
+    return this.callbackRequestService.findAll(user, userId);
   }
 
   @Get(':id')

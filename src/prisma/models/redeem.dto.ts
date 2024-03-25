@@ -28,6 +28,8 @@ export class RedeemDto {
     nullable: true,
   })
   processedAt: Date | null;
+  @ApiProperty()
+  userId: string;
   @ApiProperty({
     type: 'string',
     format: 'date-time',

@@ -44,4 +44,8 @@ export class CreateRedeemDto {
   @IsOptional()
   @IsDateString()
   processedAt?: Date | null;
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  userId: string;
 }

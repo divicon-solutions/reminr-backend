@@ -14,9 +14,8 @@ export class Incentive {
   @ApiProperty({
     type: 'number',
     format: 'float',
-    nullable: true,
   })
-  redeemedAmount: number | null;
+  redeemedAmount: number;
   @ApiProperty()
   userId: string;
   @ApiProperty({

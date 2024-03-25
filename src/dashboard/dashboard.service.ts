@@ -8,23 +8,28 @@ import { plainToInstance } from 'class-transformer';
 export class DashboardService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getDashboardData(user: User) {
+  async getDashboardData(user: User, id: string) {
     const { score: wellnessScore } = (await this.prisma
       .getClient(user)
       .wellnessScore.findFirst({
+        where: { userId: id },
         orderBy: { date: 'desc' },
         select: { score: true },
       })) || { score: null };
 
     const { _sum } = await this.prisma.getClient(user).incentive.aggregate({
       _sum: { amount: true, redeemedAmount: true },
-      where: { isRedeemed: false },
+      where: { isRedeemed: false, userId: id },
     });
 
     const takenMedications = await this.prisma
       .getClient(user)
       .reminder.findMany({
-        where: { acknowledgedAt: { not: null }, status: true },
+        where: {
+          acknowledgedAt: { not: null },
+          status: true,
+          medication: { userId: id },
+        },
         select: {
           id: true,
           remindAt: true,
@@ -34,6 +39,7 @@ export class DashboardService {
       });
 
     const inrTests = await this.prisma.getClient(user).inrTest.findMany({
+      where: { userId: id },
       select: { id: true, date: true, inrValue: true },
       orderBy: { date: 'asc' },
     });

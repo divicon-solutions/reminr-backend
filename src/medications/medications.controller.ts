@@ -6,10 +6,11 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { MedicationsService } from './medications.service';
 import { CreateMedicationDto, MedicationDto, UpdateMedicationDto } from './dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
 import { ApiSuccessResponse, CurrentUser } from '@app/shared';
 
 @ApiTags('medications')
@@ -30,9 +31,10 @@ export class MedicationsController {
     return { message: 'Medication created', result };
   }
 
+  @ApiQuery({ name: 'userId', required: false })
   @Get()
-  findAll(@CurrentUser() user) {
-    return this.medicationsService.findAll(user);
+  findAll(@CurrentUser() user, @Query('userId') userId?: string) {
+    return this.medicationsService.findAll(user, userId);
   }
 
   @Get(':id')

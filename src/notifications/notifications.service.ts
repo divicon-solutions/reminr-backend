@@ -30,9 +30,10 @@ export class NotificationsService {
     return plainToInstance(NotificationDto, result);
   }
 
-  async findAll(user: User) {
+  async findAll(user: User, userId?: string) {
     const result = await this.prisma.getClient(user).notification.findMany({
-      where: { userId: user.id },
+      where: { userId: userId },
+      orderBy: { createdAt: 'desc' },
     });
     return plainToInstance(NotificationDto, result);
   }

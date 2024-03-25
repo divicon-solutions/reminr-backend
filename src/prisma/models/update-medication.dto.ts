@@ -75,4 +75,10 @@ export class UpdateMedicationDto {
   @IsOptional()
   @IsDateString()
   time?: Date;
+  @ApiProperty({
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  userId?: string;
 }

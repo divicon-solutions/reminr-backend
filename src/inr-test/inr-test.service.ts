@@ -13,12 +13,13 @@ export class InrTestService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createInrTestDto: CreateInrTestDto, user: User) {
+    const { userId, ...rest } = createInrTestDto;
     const result = await this.prisma.getClient(user).inrTest.create({
       data: {
-        ...createInrTestDto,
+        ...rest,
         user: {
           connect: {
-            id: user.id,
+            id: userId,
           },
         },
       },
@@ -26,10 +27,10 @@ export class InrTestService {
     return plainToInstance(InrTestDto, result);
   }
 
-  async findAll(user: User) {
+  async findAll(user: User, userId?: string) {
     const result = await this.prisma
       .getClient(user)
-      .inrTest.findMany({ orderBy: { date: 'asc' } });
+      .inrTest.findMany({ where: { userId }, orderBy: { date: 'asc' } });
     return plainToInstance(InrTestDto, result);
   }
 

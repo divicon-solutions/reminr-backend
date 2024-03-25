@@ -6,11 +6,12 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { InrTestService } from './inr-test.service';
 import { InrTestDto, CreateInrTestDto, UpdateInrTestDto } from '@app/prisma';
 import { ApiSuccessResponse, CurrentUser } from '@app/shared';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('inr-test')
 @Controller('inr-test')
@@ -27,9 +28,10 @@ export class InrTestController {
     return { message: 'InrTest created', result };
   }
 
+  @ApiQuery({ name: 'userId', required: false })
   @Get()
-  findAll(@CurrentUser() user) {
-    return this.inrTestService.findAll(user);
+  findAll(@CurrentUser() user, @Query('userId') userId?: string) {
+    return this.inrTestService.findAll(user, userId);
   }
 
   @Get(':id')

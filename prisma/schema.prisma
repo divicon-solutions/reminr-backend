@@ -129,6 +129,7 @@ model Medication {
   intervalUnit  IntervalUnit?
   startDate     DateTime      @db.Date()
   time          DateTime      @db.Time()
+  /// @DtoRelationIncludeId
   userId        String
   user          User          @relation(fields: [userId], references: [id])
   /// @DtoReadOnly
@@ -169,6 +170,7 @@ model InrTest {
   remarks           String?
   date              DateTime  @db.Date()
   verificationImage String?
+  /// @DtoRelationIncludeId
   userId            String
   user              User      @relation(fields: [userId], references: [id])
   /// @DtoReadOnly
@@ -186,6 +188,7 @@ model WellnessScore {
   score     Float
   remarks   String?
   date      DateTime  @db.Date()
+  /// @DtoRelationIncludeId
   userId    String
   user      User      @relation(fields: [userId], references: [id])
   /// @DtoReadOnly
@@ -202,7 +205,8 @@ model Incentive {
   id             String                @id() @default(uuid())
   amount         Float
   isRedeemed     Boolean               @default(false)
-  redeemedAmount Float?
+  redeemedAmount Float                 @default(0)
+  /// @DtoRelationIncludeId
   userId         String
   user           User                  @relation(fields: [userId], references: [id])
   /// @DtoReadOnly
@@ -224,6 +228,7 @@ model Redeem {
   giftCardType GiftCardType?
   giftCardCode String?
   processedAt  DateTime?
+  /// @DtoRelationIncludeId
   userId       String
   user         User                  @relation(fields: [userId], references: [id])
   /// @DtoReadOnly
@@ -236,6 +241,7 @@ model Redeem {
   incentives   IncentivesOnRedeems[]
 }
 
+/// @@allow('all', auth().id == incentive.userId && auth().id == redeem.userId || auth().role == 'ADMIN')
 model IncentivesOnRedeems {
   incentiveId String
   redeemId    String
@@ -249,6 +255,7 @@ model IncentivesOnRedeems {
 /// @@allow('all', auth().id == userId || auth().role == 'ADMIN')
 model CallbackRequest {
   id         String    @id() @default(uuid())
+  /// @DtoRelationIncludeId
   userId     String
   user       User      @relation(fields: [userId], references: [id])
   /// @DtoCreateOptional

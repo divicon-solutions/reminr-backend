@@ -69,4 +69,8 @@ export class CreateMedicationDto {
   @IsNotEmpty()
   @IsDateString()
   time: Date;
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  userId: string;
 }

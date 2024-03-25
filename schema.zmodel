@@ -117,7 +117,7 @@ model Medication {
   intervalUnit     IntervalUnit?
   startDate DateTime @db.Date
   time     DateTime @db.Time
-  userId   String
+  userId   String @DtoRelationIncludeId()
   user     User @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now()) @DtoReadOnly()
   updatedAt DateTime @updatedAt @DtoReadOnly()
@@ -151,7 +151,7 @@ model InrTest {
   remarks String?
   date    DateTime @db.Date
   verificationImage   String?
-  userId  String
+  userId  String @DtoRelationIncludeId()
   user    User @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now()) @DtoReadOnly()
   updatedAt DateTime @updatedAt @DtoReadOnly()
@@ -166,7 +166,7 @@ model WellnessScore {
   score   Float
   remarks String?
   date    DateTime @db.Date
-  userId  String
+  userId  String @DtoRelationIncludeId()
   user    User @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now()) @DtoReadOnly()
   updatedAt DateTime @updatedAt @DtoReadOnly()
@@ -180,8 +180,8 @@ model Incentive {
   id      String      @id @default(uuid())
   amount Float
   isRedeemed Boolean @default(false)
-  redeemedAmount Float?
-  userId  String
+  redeemedAmount Float @default(0)
+  userId  String @DtoRelationIncludeId()
   user    User @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now()) @DtoReadOnly()
   updatedAt DateTime @updatedAt @DtoReadOnly()
@@ -211,7 +211,7 @@ model Redeem {
   giftCardType GiftCardType?
   giftCardCode String?
   processedAt DateTime?
-  userId  String
+  userId  String @DtoRelationIncludeId()
   user    User @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now()) @DtoReadOnly()
   updatedAt DateTime @updatedAt @DtoReadOnly()
@@ -230,11 +230,12 @@ model IncentivesOnRedeems {
   redeem      Redeem @relation(fields: [redeemId], references: [id])
 
   @@id([incentiveId, redeemId])
+  @@allow('all', (auth().id == incentive.userId && auth().id == redeem.userId) || auth().role == "ADMIN")
 }
 
 model CallbackRequest {
   id String @id @default(uuid())
-  userId String
+  userId String @DtoRelationIncludeId()
   user User @relation(fields: [userId], references: [id])
   isResolved Boolean @default(false) @DtoCreateOptional() @DtoUpdateOptional()
   createdAt DateTime @default(now()) @DtoReadOnly()

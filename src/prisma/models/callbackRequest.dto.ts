@@ -4,6 +4,8 @@ export class CallbackRequestDto {
   @ApiProperty()
   id: string;
   @ApiProperty()
+  userId: string;
+  @ApiProperty()
   isResolved: boolean;
   @ApiProperty({
     type: 'string',

@@ -36,4 +36,8 @@ export class CreateInrTestDto {
   @IsOptional()
   @IsString()
   verificationImage?: string | null;
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  userId: string;
 }

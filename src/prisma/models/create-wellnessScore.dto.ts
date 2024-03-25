@@ -29,4 +29,8 @@ export class CreateWellnessScoreDto {
   @IsNotEmpty()
   @IsDateString()
   date: Date;
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  userId: string;
 }

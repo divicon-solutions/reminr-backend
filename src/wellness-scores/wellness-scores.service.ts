@@ -13,12 +13,13 @@ export class WellnessScoresService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createWellnessScoreDto: CreateWellnessScoreDto, user: User) {
+    const { userId, ...rest } = createWellnessScoreDto;
     const result = await this.prisma.getClient(user).wellnessScore.create({
       data: {
-        ...createWellnessScoreDto,
+        ...rest,
         user: {
           connect: {
-            id: user.id,
+            id: userId,
           },
         },
       },
@@ -26,8 +27,11 @@ export class WellnessScoresService {
     return plainToInstance(WellnessScoreDto, result);
   }
 
-  async findAll(user: User) {
-    const result = await this.prisma.getClient(user).wellnessScore.findMany();
+  async findAll(user: User, userId?: string) {
+    const result = await this.prisma.getClient(user).wellnessScore.findMany({
+      where: { userId: userId },
+      orderBy: { createdAt: 'desc' },
+    });
     return plainToInstance(WellnessScoreDto, result);
   }
 

@@ -13,12 +13,13 @@ export class CallbackRequestService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createCallbackRequestDto: CreateCallbackRequestDto, user: User) {
+    const { userId, ...rest } = createCallbackRequestDto;
     const result = await this.prisma.getClient(user).callbackRequest.create({
       data: {
-        ...createCallbackRequestDto,
+        ...rest,
         user: {
           connect: {
-            id: user.id,
+            id: userId,
           },
         },
       },
@@ -26,8 +27,11 @@ export class CallbackRequestService {
     return plainToInstance(CallbackRequestDto, result);
   }
 
-  async findAll(user: User) {
-    const result = await this.prisma.getClient(user).callbackRequest.findMany();
+  async findAll(user: User, userId?: string) {
+    const result = await this.prisma.getClient(user).callbackRequest.findMany({
+      where: { userId },
+      orderBy: { createdAt: 'desc' },
+    });
     return plainToInstance(CallbackRequestDto, result);
   }
 

@@ -32,4 +32,10 @@ export class UpdateInrTestDto {
   @IsOptional()
   @IsString()
   verificationImage?: string | null;
+  @ApiProperty({
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  userId?: string;
 }

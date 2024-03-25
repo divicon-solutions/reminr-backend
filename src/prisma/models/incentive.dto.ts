@@ -13,9 +13,10 @@ export class IncentiveDto {
   @ApiProperty({
     type: 'number',
     format: 'float',
-    nullable: true,
   })
-  redeemedAmount: number | null;
+  redeemedAmount: number;
+  @ApiProperty()
+  userId: string;
   @ApiProperty({
     type: 'string',
     format: 'date-time',

@@ -17,6 +17,8 @@ export class WellnessScoreDto {
     format: 'date-time',
   })
   date: Date;
+  @ApiProperty()
+  userId: string;
   @ApiProperty({
     type: 'string',
     format: 'date-time',

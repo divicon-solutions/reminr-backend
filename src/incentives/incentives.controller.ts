@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { IncentivesService } from './incentives.service';
 import {
@@ -14,7 +15,7 @@ import {
   UpdateIncentiveDto,
 } from '@app/prisma';
 import { ApiSuccessResponse, CurrentUser } from '@app/shared';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('incentives')
 @Controller('incentives')
@@ -34,9 +35,10 @@ export class IncentivesController {
     return { message: 'Incentive created', result };
   }
 
+  @ApiQuery({ name: 'userId', required: false })
   @Get()
-  findAll(@CurrentUser() user) {
-    return this.incentivesService.findAll(user);
+  findAll(@CurrentUser() user, @Query('userId') userId?: string) {
+    return this.incentivesService.findAll(user, userId);
   }
 
   @Get(':id')

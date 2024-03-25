@@ -1,7 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsOptional } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateCallbackRequestDto {
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  userId: string;
   @ApiProperty({
     default: false,
   })
