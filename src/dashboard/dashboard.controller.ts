@@ -9,8 +9,13 @@ import { User } from '@app/prisma';
 export class DashboardController {
   constructor(private readonly dashboardService: DashboardService) {}
 
-  @Get()
+  @Get('member-data')
   async getDashboardData(@CurrentUser() user: User) {
     return this.dashboardService.getDashboardData(user);
+  }
+
+  @Get('admin-data')
+  async getAdminDashboardData(@CurrentUser() user: User) {
+    return this.dashboardService.getAdminDashboardData(user);
   }
 }

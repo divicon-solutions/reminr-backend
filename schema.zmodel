@@ -124,7 +124,7 @@ model Medication {
 	reminders Reminder[] @DtoEntityHidden()
 
   @@deny('read', deletedAt != null)
-  @@allow('all', auth().id == userId)
+  @@allow('all', auth().id == userId || auth().role == "ADMIN")
 }
 
 model Reminder {
@@ -141,7 +141,7 @@ model Reminder {
   deletedAt DateTime? @DtoReadOnly()
 
   @@deny('read', deletedAt != null)
-  @@allow('all', auth().id == medication.userId)
+  @@allow('all', auth().id == medication.userId || auth().role == "ADMIN")
 }
 
 model InrTest {
@@ -157,7 +157,7 @@ model InrTest {
   deletedAt DateTime? @DtoReadOnly()
 
   @@deny('read', deletedAt != null)
-  @@allow('all', auth().id == userId)
+  @@allow('all', auth().id == userId || auth().role == "ADMIN")
 }
 
 model WellnessScore {
@@ -172,7 +172,7 @@ model WellnessScore {
   deletedAt DateTime? @DtoReadOnly()
 
   @@deny('read', deletedAt != null)
-  @@allow('all', auth().id == userId)
+  @@allow('all', auth().id == userId || auth().role == "ADMIN")
 }
 
 model Incentive {
@@ -188,7 +188,7 @@ model Incentive {
 	redeems IncentivesOnRedeems[] @DtoEntityHidden()
 
   @@deny('read', deletedAt != null)
-  @@allow('all', auth().id == userId)
+  @@allow('all', auth().id == userId || auth().role == "ADMIN")
 
 }
 
@@ -218,7 +218,7 @@ model Redeem {
 	incentives IncentivesOnRedeems[] @DtoEntityHidden()
 
   @@deny('read', deletedAt != null)
-  @@allow('all', auth().id == userId)
+  @@allow('all', auth().id == userId || auth().role == "ADMIN")
 
 }
 
@@ -241,7 +241,7 @@ model CallbackRequest {
   deletedAt DateTime? @DtoReadOnly()
 
   @@deny('read', deletedAt != null)
-  @@allow('all', auth().id == userId)
+  @@allow('all', auth().id == userId || auth().role == "ADMIN")
 }
 
 model ContactRequest {
@@ -257,7 +257,7 @@ model ContactRequest {
   deletedAt DateTime? @DtoReadOnly()
 
   @@deny('read', deletedAt != null)
-  @@allow('all', auth().role == "ADMIN")
+  @@allow('all', auth().role == "ADMIN" || auth().role == "ADMIN")
 }
 
 enum Platform {
@@ -279,7 +279,7 @@ model PushToken {
   deletedAt DateTime? @DtoReadOnly()
 
   @@deny('read', deletedAt != null)
-  @@allow('all', auth() == user)
+  @@allow('all', auth() == user || auth().role == "ADMIN")
 }
 
 model Notification {
@@ -294,5 +294,5 @@ model Notification {
   deletedAt DateTime? @DtoReadOnly()
 
   @@deny('read', deletedAt != null)
-  @@allow('all', auth() == user)
+  @@allow('all', auth() == user || auth().role == "ADMIN")
 }

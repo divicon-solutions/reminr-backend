@@ -18,7 +18,9 @@ export class UsersService {
   }
 
   async findAll(user: User) {
-    const result = await this.prisma.getClient(user).user.findMany();
+    const result = await this.prisma
+      .getClient(user)
+      .user.findMany({ where: { role: 'USER' } });
     return plainToInstance(UserDto, result);
   }
 

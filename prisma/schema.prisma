@@ -114,7 +114,7 @@ model User {
 }
 
 /// @@deny('read', deletedAt != null)
-/// @@allow('all', auth().id == userId)
+/// @@allow('all', auth().id == userId || auth().role == 'ADMIN')
 model Medication {
   id            String        @id() @default(uuid())
   name          String
@@ -141,7 +141,7 @@ model Medication {
 }
 
 /// @@deny('read', deletedAt != null)
-/// @@allow('all', auth().id == medication.userId)
+/// @@allow('all', auth().id == medication.userId || auth().role == 'ADMIN')
 model Reminder {
   id             String     @id() @default(uuid())
   title          String
@@ -161,7 +161,7 @@ model Reminder {
 }
 
 /// @@deny('read', deletedAt != null)
-/// @@allow('all', auth().id == userId)
+/// @@allow('all', auth().id == userId || auth().role == 'ADMIN')
 model InrTest {
   id                String    @id() @default(uuid())
   inrValue          Float
@@ -179,7 +179,7 @@ model InrTest {
 }
 
 /// @@deny('read', deletedAt != null)
-/// @@allow('all', auth().id == userId)
+/// @@allow('all', auth().id == userId || auth().role == 'ADMIN')
 model WellnessScore {
   id        String    @id() @default(uuid())
   score     Float
@@ -196,7 +196,7 @@ model WellnessScore {
 }
 
 /// @@deny('read', deletedAt != null)
-/// @@allow('all', auth().id == userId)
+/// @@allow('all', auth().id == userId || auth().role == 'ADMIN')
 model Incentive {
   id             String                @id() @default(uuid())
   amount         Float
@@ -215,7 +215,7 @@ model Incentive {
 }
 
 /// @@deny('read', deletedAt != null)
-/// @@allow('all', auth().id == userId)
+/// @@allow('all', auth().id == userId || auth().role == 'ADMIN')
 model Redeem {
   id           String                @id() @default(uuid())
   amount       Float
@@ -245,7 +245,7 @@ model IncentivesOnRedeems {
 }
 
 /// @@deny('read', deletedAt != null)
-/// @@allow('all', auth().id == userId)
+/// @@allow('all', auth().id == userId || auth().role == 'ADMIN')
 model CallbackRequest {
   id         String    @id() @default(uuid())
   userId     String
@@ -262,7 +262,7 @@ model CallbackRequest {
 }
 
 /// @@deny('read', deletedAt != null)
-/// @@allow('all', auth().role == 'ADMIN')
+/// @@allow('all', auth().role == 'ADMIN' || auth().role == 'ADMIN')
 model ContactRequest {
   id          String    @id() @default(uuid())
   firstName   String
@@ -282,7 +282,7 @@ model ContactRequest {
 }
 
 /// @@deny('read', deletedAt != null)
-/// @@allow('all', auth() == user)
+/// @@allow('all', auth() == user || auth().role == 'ADMIN')
 model PushToken {
   id         String    @id() @default(uuid())
   token      String
@@ -302,7 +302,7 @@ model PushToken {
 }
 
 /// @@deny('read', deletedAt != null)
-/// @@allow('all', auth() == user)
+/// @@allow('all', auth() == user || auth().role == 'ADMIN')
 model Notification {
   id        String    @id() @default(uuid())
   title     String
