@@ -22,7 +22,11 @@ export class MedicationsService {
   }
 
   async findAll(user: User) {
-    const result = await this.prisma.getClient(user).medication.findMany();
+    const result = await this.prisma.getClient(user).medication.findMany({
+      orderBy: {
+        createdAt: 'asc',
+      },
+    });
     return plainToInstance(MedicationDto, result);
   }
 
