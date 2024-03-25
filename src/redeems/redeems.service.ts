@@ -5,11 +5,16 @@ import {
   UpdateRedeemDto,
   User,
 } from '@app/prisma';
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  Logger,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class RedeemsService {
+  private readonly logger = new Logger(RedeemsService.name);
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createRedeemDto: CreateRedeemDto, user: User) {
@@ -18,6 +23,18 @@ export class RedeemsService {
       .getClient(user)
       .$transaction(async (tx) => {
         let amountToSubtract = createRedeemDto.amount;
+        if (amountToSubtract <= 0) {
+          this.logger.error('Amount should be greater than 0');
+          throw new UnprocessableEntityException(
+            'Amount should be greater than 0',
+          );
+        }
+        if (amountToSubtract % 5 !== 0) {
+          this.logger.error('Amount should be multiple of 5');
+          throw new UnprocessableEntityException(
+            'Amount should be multiple of 5',
+          );
+        }
         const {
           _sum: { amount, redeemedAmount },
         } = await tx.incentive.aggregate({
@@ -25,15 +42,14 @@ export class RedeemsService {
           where: { isRedeemed: false },
         });
         const balance = amount - redeemedAmount;
-
         if (balance < amountToSubtract) {
-          throw new Error('Insufficient balance');
+          this.logger.error('Insufficient balance');
+          throw new UnprocessableEntityException('Insufficient balance');
         }
-
         const incentives = await tx.incentive.findMany({
           where: { isRedeemed: false },
+          orderBy: { createdAt: 'asc' },
         });
-
         const redeem = await tx.redeem.create({
           data: {
             ...rest,
@@ -44,45 +60,59 @@ export class RedeemsService {
             },
           },
         });
-
-        await Promise.all(
-          incentives.map(async (incentive) => {
-            if (amountToSubtract <= 0) {
-              return;
-            }
-
-            const remainingAmount = incentive.amount - incentive.redeemedAmount;
-            if (remainingAmount <= amountToSubtract) {
-              await tx.incentive.update({
-                where: {
-                  id: incentive.id,
-                },
-                data: {
-                  isRedeemed: true,
-                  redeemedAmount: incentive.amount,
-                },
-              });
-              amountToSubtract -= remainingAmount;
-            } else {
-              await tx.incentive.update({
-                where: {
-                  id: incentive.id,
-                },
-                data: {
-                  redeemedAmount: incentive.redeemedAmount + amountToSubtract,
-                },
-              });
-              amountToSubtract = 0;
-            }
-            await tx.incentivesOnRedeems.create({
+        this.logger.log('Total balance:', balance);
+        this.logger.log('Amount to subtract:', amountToSubtract);
+        for await (const incentive of incentives) {
+          this.logger.log(
+            'Incentive:',
+            incentive.id,
+            incentive.amount,
+            incentive.redeemedAmount,
+          );
+          this.logger.log('Amount to subtract:', amountToSubtract);
+          if (amountToSubtract <= 0) {
+            return;
+          }
+          const remainingAmount = incentive.amount - incentive.redeemedAmount;
+          this.logger.log(
+            'Subtracting:',
+            amountToSubtract,
+            'from',
+            remainingAmount,
+            'of',
+            incentive.id,
+          );
+          if (remainingAmount <= amountToSubtract) {
+            this.logger.log('Redeemed fully:', incentive.id);
+            await tx.incentive.update({
+              where: {
+                id: incentive.id,
+              },
               data: {
-                incentive: { connect: { id: incentive.id } },
-                redeem: { connect: { id: redeem.id } },
+                isRedeemed: true,
+                redeemedAmount: remainingAmount,
               },
             });
-          }),
-        );
-
+            amountToSubtract -= remainingAmount;
+          } else {
+            this.logger.log('Redeemed partially:', incentive.id);
+            await tx.incentive.update({
+              where: {
+                id: incentive.id,
+              },
+              data: {
+                redeemedAmount: incentive.redeemedAmount + amountToSubtract,
+              },
+            });
+            amountToSubtract = 0;
+          }
+          await tx.incentivesOnRedeems.create({
+            data: {
+              incentive: { connect: { id: incentive.id } },
+              redeem: { connect: { id: redeem.id } },
+            },
+          });
+        }
         return plainToInstance(RedeemDto, redeem);
       });
     return result;
