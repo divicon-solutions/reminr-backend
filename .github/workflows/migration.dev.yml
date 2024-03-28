@@ -1,4 +1,4 @@
-name: Migration(Dev) CI/CD
+name: Migration(Dev)
 
 on:
   push:
