@@ -40,6 +40,3 @@ jobs:
         run: |
           gcloud builds submit . --config=cloudbuild.yml \
             --substitutions=_IMAGE=${{ env.NAME }},_FILE_PATH=Dockerfile
-      - name: Add Cloud Sql Instance IP
-        run: |
-          gcloud run services update ${{ env.NAME }} --add-cloudsql-instances ${{ env.CONNECTION_NAME }}
