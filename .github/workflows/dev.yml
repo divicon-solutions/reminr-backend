@@ -7,7 +7,7 @@ on:
     paths-ignore:
       - 'README.md'
       - 'LICENSE'
-      - '.github/workflows/migration.dev.yml'
+      - '!.github/workflows/dev.yml'
   workflow_dispatch:
 
 env:
