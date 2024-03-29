@@ -11,7 +11,7 @@ env:
   CONNECTION_NAME: reminr-prod:us-central1:reminr-prod
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

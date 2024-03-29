@@ -16,7 +16,7 @@ env:
   NAME: reminr-api
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -45,3 +45,37 @@ jobs:
         run: |
           gcloud builds submit . --config=cloudbuild.yml \
             --substitutions=_IMAGE=${{ env.NAME }},_FILE_PATH=Dockerfile
+
+  deploy-schedular:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'yarn'
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+      - name: Create Env file
+        run: |
+          echo "${{ secrets.FUNCTIONS_DEV_ENV }}" > .env
+      - name: Configure Service Account
+        uses: jsdaniell/create-json@v1.2.1
+        with:
+          name: 'serviceAccountKey.json'
+          json: ${{ secrets.FB_SA_DEV }}
+          dir: 'src/config/'
+      - name: Create .firebaserc
+        uses: jsdaniell/create-json@v1.2.1
+        with:
+          name: '.firebaserc'
+          json: ${{ secrets.DEV_FIREBASERC }}
+          dir: './'
+      - name: Deploy functions
+        uses: w9jds/firebase-action@v13.3.0
+        with:
+          args: deploy --only functions
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_DEV }}

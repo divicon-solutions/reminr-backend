@@ -1,0 +1,19 @@
+{
+  "functions": [
+    {
+      "source": ".",
+      "runtime": "nodejs18",
+      "codebase": "default",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log"
+      ],
+      "predeploy": [
+        "yarn --prefix \"$RESOURCE_DIR\" zenstack generate",
+        "yarn --prefix \"$RESOURCE_DIR\" build"
+      ]
+    }
+  ]
+}
