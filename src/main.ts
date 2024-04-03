@@ -34,7 +34,7 @@ async function bootstrap() {
         format: winston.format.combine(
           winston.format.ms(),
           nestWinstonModuleUtilities.format.nestLike('MyApp', {
-            colors: true,
+            colors: false,
             prettyPrint: true,
           }),
         ),
