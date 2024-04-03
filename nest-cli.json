@@ -13,5 +13,8 @@
         }
       }
     ]
+  },
+  "generateOptions": {
+    "spec": false
   }
 }
