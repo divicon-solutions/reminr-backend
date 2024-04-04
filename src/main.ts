@@ -33,7 +33,7 @@ async function bootstrap() {
       new winston.transports.Console({
         format: winston.format.combine(
           winston.format.ms(),
-          nestWinstonModuleUtilities.format.nestLike('MyApp', {
+          nestWinstonModuleUtilities.format.nestLike('Api', {
             colors: false,
             prettyPrint: true,
           }),

@@ -5,6 +5,11 @@ import { AppModule } from './src/app.module';
 import * as admin from 'firebase-admin';
 import * as serviceAccountKey from './src/config/serviceAccountKey.json';
 import { RemindersService } from '@app/reminders/reminders.service';
+import * as winston from 'winston';
+import {
+  WinstonModule,
+  utilities as nestWinstonModuleUtilities,
+} from 'nest-winston';
 
 function initializeFirebase() {
   if (!admin.apps.length) {
@@ -23,7 +28,24 @@ function initializeFirebase() {
 initializeFirebase();
 
 async function getNestApp() {
-  return await NestFactory.createApplicationContext(AppModule);
+  const instance = winston.createLogger({
+    transports: [
+      new winston.transports.Console({
+        format: winston.format.combine(
+          winston.format.ms(),
+          nestWinstonModuleUtilities.format.nestLike('Schedular', {
+            colors: false,
+            prettyPrint: true,
+          }),
+        ),
+      }),
+    ],
+  });
+  return await NestFactory.createApplicationContext(AppModule, {
+    logger: WinstonModule.createLogger({
+      instance,
+    }),
+  });
 }
 
 export const scheduleReminders = onSchedule(
