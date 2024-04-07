@@ -1,4 +1,4 @@
-import { RedeemMethod, GiftCardType } from '@prisma/client';
+import { RedeemMethod } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsDateString,
@@ -22,13 +22,6 @@ export class CreateRedeemDto {
   @IsNotEmpty()
   method: RedeemMethod;
   @ApiProperty({
-    enum: GiftCardType,
-    required: false,
-    nullable: true,
-  })
-  @IsOptional()
-  giftCardType?: GiftCardType | null;
-  @ApiProperty({
     required: false,
     nullable: true,
   })
@@ -44,6 +37,15 @@ export class CreateRedeemDto {
   @IsOptional()
   @IsDateString()
   processedAt?: Date | null;
+  @ApiProperty({
+    type: 'string',
+    format: 'date-time',
+    required: false,
+    nullable: true,
+  })
+  @IsOptional()
+  @IsDateString()
+  expiryAt?: Date | null;
   @ApiProperty()
   @IsNotEmpty()
   @IsString()

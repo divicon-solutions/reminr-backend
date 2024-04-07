@@ -1,5 +1,6 @@
-import { RedeemMethod, GiftCardType } from '@prisma/client';
+import { RedeemMethod } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
+import { GiftCardType } from './giftCardType.entity';
 import { User } from './user.entity';
 
 export class Redeem {
@@ -15,10 +16,15 @@ export class Redeem {
   })
   method: RedeemMethod;
   @ApiProperty({
-    enum: GiftCardType,
     nullable: true,
   })
-  giftCardType: GiftCardType | null;
+  giftCardTypeId: string | null;
+  @ApiProperty({
+    type: () => GiftCardType,
+    required: false,
+    nullable: true,
+  })
+  giftCardType?: GiftCardType | null;
   @ApiProperty({
     nullable: true,
   })
@@ -29,6 +35,12 @@ export class Redeem {
     nullable: true,
   })
   processedAt: Date | null;
+  @ApiProperty({
+    type: 'string',
+    format: 'date-time',
+    nullable: true,
+  })
+  expiryAt: Date | null;
   @ApiProperty()
   userId: string;
   @ApiProperty({

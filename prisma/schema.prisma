@@ -66,13 +66,6 @@ enum RedeemMethod {
   GIFTCARD
 }
 
-enum GiftCardType {
-  AMAZON
-  WALMART
-  TARGET
-  OTHER
-}
-
 enum Platform {
   IOS
   ANDROID
@@ -220,25 +213,42 @@ model Incentive {
 }
 
 /// @@deny('read', deletedAt != null)
+/// @@allow('read', true)
+/// @@allow('all', auth().role == 'ADMIN')
+model GiftCardType {
+  id        String    @id() @default(uuid())
+  name      String
+  /// @DtoReadOnly
+  createdAt DateTime  @default(now())
+  /// @DtoReadOnly
+  updatedAt DateTime  @updatedAt()
+  /// @DtoReadOnly
+  deletedAt DateTime?
+  redeems   Redeem[]
+}
+
+/// @@deny('read', deletedAt != null)
 /// @@allow('all', auth().id == userId || auth().role == 'ADMIN')
 model Redeem {
-  id           String                @id() @default(uuid())
-  amount       Float
-  method       RedeemMethod
-  giftCardType GiftCardType?
-  giftCardCode String?
-  processedAt  DateTime?
+  id             String                @id() @default(uuid())
+  amount         Float
+  method         RedeemMethod
+  giftCardTypeId String?
+  giftCardType   GiftCardType?         @relation(fields: [giftCardTypeId], references: [id])
+  giftCardCode   String?
+  processedAt    DateTime?
+  expiryAt       DateTime?
   /// @DtoRelationIncludeId
-  userId       String
-  user         User                  @relation(fields: [userId], references: [id])
+  userId         String
+  user           User                  @relation(fields: [userId], references: [id])
   /// @DtoReadOnly
-  createdAt    DateTime              @default(now())
+  createdAt      DateTime              @default(now())
   /// @DtoReadOnly
-  updatedAt    DateTime              @updatedAt()
+  updatedAt      DateTime              @updatedAt()
   /// @DtoReadOnly
-  deletedAt    DateTime?
+  deletedAt      DateTime?
   /// @DtoEntityHidden
-  incentives   IncentivesOnRedeems[]
+  incentives     IncentivesOnRedeems[]
 }
 
 /// @@allow('all', auth().id == incentive.userId && auth().id == redeem.userId || auth().role == 'ADMIN')

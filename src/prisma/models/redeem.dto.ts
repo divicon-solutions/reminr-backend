@@ -1,4 +1,4 @@
-import { RedeemMethod, GiftCardType } from '@prisma/client';
+import { RedeemMethod } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class RedeemDto {
@@ -14,11 +14,6 @@ export class RedeemDto {
   })
   method: RedeemMethod;
   @ApiProperty({
-    enum: GiftCardType,
-    nullable: true,
-  })
-  giftCardType: GiftCardType | null;
-  @ApiProperty({
     nullable: true,
   })
   giftCardCode: string | null;
@@ -28,6 +23,12 @@ export class RedeemDto {
     nullable: true,
   })
   processedAt: Date | null;
+  @ApiProperty({
+    type: 'string',
+    format: 'date-time',
+    nullable: true,
+  })
+  expiryAt: Date | null;
   @ApiProperty()
   userId: string;
   @ApiProperty({

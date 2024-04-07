@@ -19,6 +19,7 @@ import { CallbackRequestModule } from './callback-request/callback-request.modul
 import { ContactRequestModule } from './contact-request/contact-request.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { GiftCardTypeModule } from './gift-card-type/gift-card-type.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     ContactRequestModule,
     NotificationsModule,
     SharedModule,
+    GiftCardTypeModule,
   ],
   controllers: [AppController],
   providers: [

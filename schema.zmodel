@@ -197,20 +197,28 @@ enum RedeemMethod {
   GIFTCARD
 }
 
-enum GiftCardType {
-  AMAZON
-  WALMART
-  TARGET
-  OTHER
+model GiftCardType {
+  id String @id @default(uuid())
+  name String
+  createdAt DateTime @default(now()) @DtoReadOnly()
+  updatedAt DateTime @updatedAt @DtoReadOnly()
+  deletedAt DateTime? @DtoReadOnly()
+  redeems Redeem[]
+
+  @@deny('read', deletedAt != null)
+  @@allow('read', true)
+  @@allow('all', auth().role == "ADMIN")
 }
 
 model Redeem {
   id      String      @id @default(uuid())
   amount Float
   method  RedeemMethod
-  giftCardType GiftCardType?
+  giftCardTypeId String?
+  giftCardType GiftCardType? @relation(fields: [giftCardTypeId], references: [id])
   giftCardCode String?
   processedAt DateTime?
+  expiryAt DateTime?
   userId  String @DtoRelationIncludeId()
   user    User @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now()) @DtoReadOnly()
