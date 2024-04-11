@@ -118,7 +118,7 @@ model Medication {
   startDate DateTime @db.Date
   time     DateTime @db.Time
   userId   String @DtoRelationIncludeId()
-  user     User @relation(fields: [userId], references: [id])
+  user     User @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now()) @DtoReadOnly()
   updatedAt DateTime @updatedAt @DtoReadOnly()
   deletedAt DateTime? @DtoReadOnly()
@@ -136,7 +136,7 @@ model Reminder {
   status  Boolean?
   remindAt DateTime
   medicationId String @DtoRelationIncludeId()
-  medication Medication @relation(fields: [medicationId], references: [id])
+  medication Medication @relation(fields: [medicationId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now()) @DtoReadOnly()
   updatedAt DateTime @updatedAt @DtoReadOnly()
   deletedAt DateTime? @DtoReadOnly()
@@ -152,7 +152,7 @@ model InrTest {
   date    DateTime @db.Date
   verificationImage   String?
   userId  String @DtoRelationIncludeId()
-  user    User @relation(fields: [userId], references: [id])
+  user    User @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now()) @DtoReadOnly()
   updatedAt DateTime @updatedAt @DtoReadOnly()
   deletedAt DateTime? @DtoReadOnly()
@@ -167,7 +167,7 @@ model WellnessScore {
   remarks String?
   date    DateTime @db.Date
   userId  String @DtoRelationIncludeId()
-  user    User @relation(fields: [userId], references: [id])
+  user    User @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now()) @DtoReadOnly()
   updatedAt DateTime @updatedAt @DtoReadOnly()
   deletedAt DateTime? @DtoReadOnly()
@@ -182,7 +182,7 @@ model Incentive {
   isRedeemed Boolean @default(false)
   redeemedAmount Float @default(0)
   userId  String @DtoRelationIncludeId()
-  user    User @relation(fields: [userId], references: [id])
+  user    User @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now()) @DtoReadOnly()
   updatedAt DateTime @updatedAt @DtoReadOnly()
   deletedAt DateTime? @DtoReadOnly()
@@ -215,7 +215,7 @@ model Redeem {
   amount Float
   method  RedeemMethod
   giftCardTypeId String?
-  giftCardType GiftCardType? @relation(fields: [giftCardTypeId], references: [id])
+  giftCardType GiftCardType? @relation(fields: [giftCardTypeId], references: [id], onDelete: SetNull)
   giftCardCode String?
   processedAt DateTime?
   expiryAt DateTime?
@@ -234,8 +234,8 @@ model Redeem {
 model IncentivesOnRedeems {
   incentiveId String
   redeemId    String
-  incentive   Incentive @relation(fields: [incentiveId], references: [id])
-  redeem      Redeem @relation(fields: [redeemId], references: [id])
+  incentive   Incentive @relation(fields: [incentiveId], references: [id], onDelete: Cascade)
+  redeem      Redeem @relation(fields: [redeemId], references: [id], onDelete: Cascade)
 
   @@id([incentiveId, redeemId])
   @@allow('all', (auth().id == incentive.userId && auth().id == redeem.userId) || auth().role == "ADMIN")
@@ -244,7 +244,7 @@ model IncentivesOnRedeems {
 model CallbackRequest {
   id String @id @default(uuid())
   userId String @DtoRelationIncludeId()
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   isResolved Boolean @default(false) @DtoCreateOptional() @DtoUpdateOptional()
   createdAt DateTime @default(now()) @DtoReadOnly()
   updatedAt DateTime @updatedAt @DtoReadOnly()
@@ -283,7 +283,7 @@ model PushToken {
   platform Platform
   identifier String
   userId String @DtoRelationIncludeId()
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now()) @DtoReadOnly()
   updatedAt DateTime @updatedAt @DtoReadOnly()
   deletedAt DateTime? @DtoReadOnly()
@@ -298,7 +298,7 @@ model Notification {
   body String
   data Json?
   userId String @DtoRelationIncludeId()
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now()) @DtoReadOnly()
   updatedAt DateTime @updatedAt @DtoReadOnly()
   deletedAt DateTime? @DtoReadOnly()

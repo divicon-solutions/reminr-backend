@@ -8,5 +8,6 @@ import { NotificationsModule } from '@app/notifications/notifications.module';
   imports: [PrismaModule, NotificationsModule],
   controllers: [RemindersController],
   providers: [RemindersService],
+  exports: [RemindersService],
 })
 export class RemindersModule {}

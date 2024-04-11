@@ -124,7 +124,7 @@ model Medication {
   time          DateTime      @db.Time()
   /// @DtoRelationIncludeId
   userId        String
-  user          User          @relation(fields: [userId], references: [id])
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   /// @DtoReadOnly
   createdAt     DateTime      @default(now())
   /// @DtoReadOnly
@@ -146,7 +146,7 @@ model Reminder {
   remindAt       DateTime
   /// @DtoRelationIncludeId
   medicationId   String
-  medication     Medication @relation(fields: [medicationId], references: [id])
+  medication     Medication @relation(fields: [medicationId], references: [id], onDelete: Cascade)
   /// @DtoReadOnly
   createdAt      DateTime   @default(now())
   /// @DtoReadOnly
@@ -165,7 +165,7 @@ model InrTest {
   verificationImage String?
   /// @DtoRelationIncludeId
   userId            String
-  user              User      @relation(fields: [userId], references: [id])
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   /// @DtoReadOnly
   createdAt         DateTime  @default(now())
   /// @DtoReadOnly
@@ -183,7 +183,7 @@ model WellnessScore {
   date      DateTime  @db.Date()
   /// @DtoRelationIncludeId
   userId    String
-  user      User      @relation(fields: [userId], references: [id])
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   /// @DtoReadOnly
   createdAt DateTime  @default(now())
   /// @DtoReadOnly
@@ -201,7 +201,7 @@ model Incentive {
   redeemedAmount Float                 @default(0)
   /// @DtoRelationIncludeId
   userId         String
-  user           User                  @relation(fields: [userId], references: [id])
+  user           User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
   /// @DtoReadOnly
   createdAt      DateTime              @default(now())
   /// @DtoReadOnly
@@ -234,7 +234,7 @@ model Redeem {
   amount         Float
   method         RedeemMethod
   giftCardTypeId String?
-  giftCardType   GiftCardType?         @relation(fields: [giftCardTypeId], references: [id])
+  giftCardType   GiftCardType?         @relation(fields: [giftCardTypeId], references: [id], onDelete: SetNull)
   giftCardCode   String?
   processedAt    DateTime?
   expiryAt       DateTime?
@@ -255,8 +255,8 @@ model Redeem {
 model IncentivesOnRedeems {
   incentiveId String
   redeemId    String
-  incentive   Incentive @relation(fields: [incentiveId], references: [id])
-  redeem      Redeem    @relation(fields: [redeemId], references: [id])
+  incentive   Incentive @relation(fields: [incentiveId], references: [id], onDelete: Cascade)
+  redeem      Redeem    @relation(fields: [redeemId], references: [id], onDelete: Cascade)
 
   @@id([incentiveId, redeemId])
 }
@@ -267,7 +267,7 @@ model CallbackRequest {
   id         String    @id() @default(uuid())
   /// @DtoRelationIncludeId
   userId     String
-  user       User      @relation(fields: [userId], references: [id])
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   /// @DtoCreateOptional
   /// @DtoUpdateOptional
   isResolved Boolean   @default(false)
@@ -310,7 +310,7 @@ model PushToken {
   identifier String
   /// @DtoRelationIncludeId
   userId     String
-  user       User      @relation(fields: [userId], references: [id])
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   /// @DtoReadOnly
   createdAt  DateTime  @default(now())
   /// @DtoReadOnly
@@ -328,7 +328,7 @@ model Notification {
   data      Json?
   /// @DtoRelationIncludeId
   userId    String
-  user      User      @relation(fields: [userId], references: [id])
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   /// @DtoReadOnly
   createdAt DateTime  @default(now())
   /// @DtoReadOnly

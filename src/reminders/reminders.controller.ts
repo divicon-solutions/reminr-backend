@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { RemindersService } from './reminders.service';
 import { CreateReminderDto, UpdateReminderDto, Reminder } from '@app/prisma';
@@ -28,8 +29,8 @@ export class RemindersController {
   }
 
   @Get()
-  findAll(@CurrentUser() user) {
-    return this.remindersService.findAll(user);
+  findAll(@CurrentUser() user, @Query('date') date: Date) {
+    return this.remindersService.findAll(user, date);
   }
 
   @Get(':id')

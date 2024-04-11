@@ -14,7 +14,8 @@
     "start:prod": "node dist/src/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "generate": "rimraf src/prisma/models && zenstack generate",
-    "make:migration": "zenstack generate && prisma migrate dev --name"
+    "make:migration": "zenstack generate && prisma migrate dev --name",
+    "db:studio": "prisma studio"
   },
   "main": "dist/index.js",
   "dependencies": {

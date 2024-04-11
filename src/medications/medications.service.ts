@@ -2,10 +2,14 @@ import { PrismaService, User } from '@app/prisma';
 import { Injectable } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { CreateMedicationDto, MedicationDto, UpdateMedicationDto } from './dto';
+import { RemindersService } from '@app/reminders/reminders.service';
 
 @Injectable()
 export class MedicationsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly remindersService: RemindersService,
+  ) {}
 
   async create(createMedicationDto: CreateMedicationDto, user: User) {
     const { userId, ...rest } = createMedicationDto;
@@ -19,6 +23,7 @@ export class MedicationsService {
         },
       },
     });
+    await this.remindersService.createReminder(result, user);
     return plainToInstance(MedicationDto, result);
   }
 
@@ -52,6 +57,7 @@ export class MedicationsService {
       },
       data: updateMedicationDto,
     });
+    await this.remindersService.updateReminder(result, user);
     return plainToInstance(MedicationDto, result);
   }
 
