@@ -96,7 +96,7 @@ export class RemindersService {
           where: {
             medicationId: medication.id,
             remindAt: {
-              gte: moment().toDate(),
+              gte: moment().startOf('day').toDate(),
             },
           },
         });
@@ -108,8 +108,9 @@ export class RemindersService {
   }
 
   async findAll(user: User, date: Date) {
-    const startOfDay = moment(date).startOf('day').toDate();
-    const endOfDay = moment(date).endOf('day').toDate();
+    const timezone = 'America/New_York';
+    const startOfDay = moment(date).tz(timezone).startOf('day').toDate();
+    const endOfDay = moment(date).tz(timezone).endOf('day').toDate();
     const result = await this.prisma.getClient(user).reminder.findMany({
       where: {
         remindAt: {

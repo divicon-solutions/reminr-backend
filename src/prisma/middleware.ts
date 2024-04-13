@@ -7,6 +7,7 @@ export function SoftDeleteMiddleware<T>(): Prisma.Middleware {
   ): Promise<T> => {
     const whiteList: Prisma.ModelName[] = [
       Prisma.ModelName.PushToken,
+      Prisma.ModelName.Medication,
       Prisma.ModelName.Reminder,
     ];
 
