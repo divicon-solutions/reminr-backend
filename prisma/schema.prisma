@@ -84,6 +84,9 @@ model User {
   /// @DtoCreateOptional
   /// @DtoUpdateOptional
   stickyReminder   Boolean           @default(false)
+  /// @DtoCreateOptional
+  /// @DtoUpdateOptional
+  timeZone         String            @default("America/New_York")
   /// @DtoReadOnly
   isVerified       Boolean           @default(false)
   /// @DtoReadOnly

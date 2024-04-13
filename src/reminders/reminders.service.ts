@@ -34,7 +34,7 @@ export class RemindersService {
 
   async createReminder(medication: Medication, user: User) {
     try {
-      const timezone = 'America/New_York';
+      const timezone = user.timeZone;
       const endOfDay = moment().tz(timezone).endOf('day');
       const startDate = moment(medication.startDate).utc().tz(timezone, true);
       // if medication start date is in the future, don't create reminders
@@ -108,7 +108,7 @@ export class RemindersService {
   }
 
   async findAll(user: User, date: Date) {
-    const timezone = 'America/New_York';
+    const timezone = user.timeZone;
     const startOfDay = moment(date).tz(timezone).startOf('day').toDate();
     const endOfDay = moment(date).tz(timezone).endOf('day').toDate();
     const result = await this.prisma.getClient(user).reminder.findMany({
@@ -159,6 +159,7 @@ export class RemindersService {
     const medications = await this.prisma.medication.findMany({
       where: {
         startDate: { lte: now + 'T00:00:00.000Z' },
+        user: { timeZone: timezone },
       },
     });
     this.logger.log(`Found ${medications.length} medications`);

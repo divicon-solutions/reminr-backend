@@ -28,4 +28,11 @@ export class UpdateUserDto {
   @IsOptional()
   @IsBoolean()
   stickyReminder?: boolean;
+  @ApiProperty({
+    default: 'America/New_York',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  timeZone?: string;
 }

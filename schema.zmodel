@@ -66,6 +66,7 @@ model User {
   role      Role       @default(USER) @DtoReadOnly()
   phoneNumber String?
   stickyReminder Boolean @default(false) @DtoCreateOptional() @DtoUpdateOptional()
+  timeZone String @default("America/New_York") @DtoCreateOptional() @DtoUpdateOptional()
   isVerified Boolean @default(false) @DtoReadOnly()
   createdAt DateTime @default(now()) @DtoReadOnly()
   updatedAt DateTime @updatedAt @DtoReadOnly()

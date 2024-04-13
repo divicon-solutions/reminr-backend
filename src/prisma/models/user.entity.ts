@@ -22,6 +22,8 @@ export class User {
   @ApiProperty()
   stickyReminder: boolean;
   @ApiProperty()
+  timeZone: string;
+  @ApiProperty()
   isVerified: boolean;
   @ApiProperty({
     type: 'string',
