@@ -107,6 +107,23 @@ export class RemindersService {
     }
   }
 
+  async deleteReminder(medication: Medication) {
+    try {
+      this.logger.log('Deleting reminders');
+      await this.notificationsService.sendPushNotification(
+        {
+          body: `Delete reminder for ${medication.name}`,
+          data: { medicationId: medication.id, type: 'SCHEDULE_REMINDERS' },
+          title: 'Delete medication reminder',
+          userId: medication.userId,
+        },
+        true,
+      );
+    } catch (error) {
+      this.logger.error(error);
+    }
+  }
+
   async findAll(user: User, date: Date) {
     const timezone = user.timeZone;
     const startOfDay = moment(date).tz(timezone).startOf('day').toDate();

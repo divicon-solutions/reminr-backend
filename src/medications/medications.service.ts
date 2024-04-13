@@ -67,6 +67,7 @@ export class MedicationsService {
         id,
       },
     });
+    await this.remindersService.deleteReminder(result);
     return plainToInstance(MedicationDto, result);
   }
 }
