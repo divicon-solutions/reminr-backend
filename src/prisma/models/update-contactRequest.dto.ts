@@ -29,10 +29,11 @@ export class UpdateContactRequestDto {
   phoneNumber?: string | null;
   @ApiProperty({
     required: false,
+    nullable: true,
   })
   @IsOptional()
   @IsString()
-  message?: string;
+  message?: string | null;
   @ApiProperty({
     default: false,
     required: false,

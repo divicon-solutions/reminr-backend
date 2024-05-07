@@ -290,7 +290,7 @@ model ContactRequest {
   lastName    String
   email       String
   phoneNumber String?
-  message     String
+  message     String?
   /// @DtoCreateOptional
   /// @DtoUpdateOptional
   isResolved  Boolean   @default(false)

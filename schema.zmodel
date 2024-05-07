@@ -261,7 +261,7 @@ model ContactRequest {
   lastName String
   email String
   phoneNumber String?
-  message String
+  message String?
   isResolved Boolean @default(false) @DtoCreateOptional() @DtoUpdateOptional()
   createdAt DateTime @default(now()) @DtoReadOnly()
   updatedAt DateTime @updatedAt @DtoReadOnly()

@@ -13,8 +13,10 @@ export class ContactRequest {
     nullable: true,
   })
   phoneNumber: string | null;
-  @ApiProperty()
-  message: string;
+  @ApiProperty({
+    nullable: true,
+  })
+  message: string | null;
   @ApiProperty()
   isResolved: boolean;
   @ApiProperty({
