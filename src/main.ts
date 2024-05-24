@@ -6,11 +6,6 @@ import { AppModule } from './app.module';
 import * as admin from 'firebase-admin';
 import * as serviceAccountKey from './config/serviceAccountKey.json';
 import { CursorPaginatedDto, PaginatedDto, SuccessResponseDto } from './shared';
-import * as winston from 'winston';
-import {
-  WinstonModule,
-  utilities as nestWinstonModuleUtilities,
-} from 'nest-winston';
 
 function initializeFirebase() {
   const logger = new Logger('Firebase');
@@ -28,24 +23,7 @@ function initializeFirebase() {
 }
 
 async function bootstrap() {
-  const instance = winston.createLogger({
-    transports: [
-      new winston.transports.Console({
-        format: winston.format.combine(
-          winston.format.ms(),
-          nestWinstonModuleUtilities.format.nestLike('Api', {
-            colors: false,
-            prettyPrint: true,
-          }),
-        ),
-      }),
-    ],
-  });
-  const app = await NestFactory.create(AppModule, {
-    logger: WinstonModule.createLogger({
-      instance,
-    }),
-  });
+  const app = await NestFactory.create(AppModule);
   const logger = new Logger('Main');
   app.enableVersioning({ type: VersioningType.URI, defaultVersion: '1' });
 

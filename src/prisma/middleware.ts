@@ -9,6 +9,7 @@ export function SoftDeleteMiddleware<T>(): Prisma.Middleware {
       Prisma.ModelName.PushToken,
       Prisma.ModelName.Medication,
       Prisma.ModelName.Reminder,
+      Prisma.ModelName.User,
     ];
 
     if (whiteList.includes(params.model)) {

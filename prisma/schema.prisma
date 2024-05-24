@@ -244,7 +244,7 @@ model Redeem {
   expiryAt       DateTime?
   /// @DtoRelationIncludeId
   userId         String
-  user           User                  @relation(fields: [userId], references: [id])
+  user           User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
   /// @DtoReadOnly
   createdAt      DateTime              @default(now())
   /// @DtoReadOnly
