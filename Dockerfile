@@ -14,4 +14,7 @@ COPY . .
 
 RUN yarn build
 
+ENV NO_COLOR=1
+ENV NODE_ENV=production
+
 CMD ["yarn", "start:prod"]
