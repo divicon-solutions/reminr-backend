@@ -27,6 +27,13 @@ export class CreateRedeemDto {
   })
   @IsOptional()
   @IsString()
+  giftCardTypeId?: string | null;
+  @ApiProperty({
+    required: false,
+    nullable: true,
+  })
+  @IsOptional()
+  @IsString()
   giftCardCode?: string | null;
   @ApiProperty({
     type: 'string',

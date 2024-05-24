@@ -4,6 +4,7 @@ import {
   PrismaService,
   UpdateRedeemDto,
   User,
+  Redeem,
 } from '@app/prisma';
 import {
   Injectable,
@@ -18,7 +19,7 @@ export class RedeemsService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createRedeemDto: CreateRedeemDto, user: User) {
-    const { userId, ...rest } = createRedeemDto;
+    const { userId, giftCardTypeId, ...rest } = createRedeemDto;
     const result = await this.prisma
       .getClient(user)
       .$transaction(async (tx) => {
@@ -60,6 +61,20 @@ export class RedeemsService {
             },
           },
         });
+        if (giftCardTypeId) {
+          await tx.redeem.update({
+            where: {
+              id: redeem.id,
+            },
+            data: {
+              giftCardType: {
+                connect: {
+                  id: giftCardTypeId,
+                },
+              },
+            },
+          });
+        }
         this.logger.log('Total balance:', balance);
         this.logger.log('Amount to subtract:', amountToSubtract);
         for await (const incentive of incentives) {
@@ -131,8 +146,11 @@ export class RedeemsService {
       where: {
         id,
       },
+      include: {
+        giftCardType: true,
+      },
     });
-    return plainToInstance(RedeemDto, result);
+    return plainToInstance(Redeem, result);
   }
 
   async update(id: string, updateRedeemDto: UpdateRedeemDto, user: User) {

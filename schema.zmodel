@@ -215,7 +215,7 @@ model Redeem {
   id      String      @id @default(uuid())
   amount Float
   method  RedeemMethod
-  giftCardTypeId String?
+  giftCardTypeId String? @DtoRelationIncludeId()
   giftCardType GiftCardType? @relation(fields: [giftCardTypeId], references: [id], onDelete: SetNull)
   giftCardCode String?
   processedAt DateTime?

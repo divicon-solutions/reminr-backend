@@ -16,6 +16,10 @@ export class RedeemDto {
   @ApiProperty({
     nullable: true,
   })
+  giftCardTypeId: string | null;
+  @ApiProperty({
+    nullable: true,
+  })
   giftCardCode: string | null;
   @ApiProperty({
     type: 'string',
