@@ -36,6 +36,8 @@ lerna-debug.log*
 
 # misc
 .env
+.env.dev
+.env.prod
 serviceAccountKey.json
 /scripts/*
 .firebase/*

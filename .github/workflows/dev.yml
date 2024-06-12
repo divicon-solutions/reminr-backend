@@ -31,7 +31,8 @@ jobs:
           project_id: ${{ env.PROJECT_ID }}
       - name: Create Env file
         run: |
-          echo "${{ secrets.DEV_ENV }}" | base64 --decode > .env.yml
+          echo "${{ secrets.DEV_ENV }}" > .env
+          npx dotenv-to-yaml .env .env.yml
       - name: Configure Service Account
         uses: jsdaniell/create-json@v1.2.1
         with:
@@ -60,7 +61,7 @@ jobs:
         run: yarn install --frozen-lockfile
       - name: Create Env file
         run: |
-          echo "${{ secrets.FUNCTIONS_DEV_ENV }}" > .env
+          echo "${{ secrets.DEV_ENV }}" > .env
       - name: Configure Service Account
         uses: jsdaniell/create-json@v1.2.1
         with:
